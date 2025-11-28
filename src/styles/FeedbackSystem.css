@@ -182,6 +182,45 @@ body {
   background: #c82333;
 }
 
+/* Button utility system */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease, background 160ms ease;
+  text-decoration: none;
+}
+
+.btn:focus-visible { outline: 3px solid rgba(14,165,164,0.26); outline-offset: 3px; }
+
+.btn-primary { padding: 0.6rem 1.1rem; border-radius: 10px; }
+.btn-secondary { background: #6c757d; color: white; padding: 0.55rem 1rem; border-radius: 10px; }
+.btn-small { padding: 0.35rem 0.6rem; font-size: 0.85rem; border-radius: 8px; }
+.btn-danger { background: #dc3545; color: white; padding: 0.5rem 0.8rem; border-radius: 8px; }
+.btn-ghost { background: transparent; color: var(--text); border: 1px solid rgba(0,0,0,0.06); }
+
+.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
+.btn:active { transform: translateY(0); }
+
+/* Special-purpose small variants used in UI */
+.btn-add { background: #28a745; color: white; }
+.btn-add:hover { box-shadow: 0 8px 30px rgba(40,167,69,0.12); }
+.btn-delete { background: #dc3545; color: white; }
+.btn-increment { background: linear-gradient(180deg, #10b981 0%, #059669 100%); color: white; width: 60px; height: 45px; }
+.btn-decrement { background: linear-gradient(180deg, #ef4444 0%, #dc2626 100%); color: white; width: 60px; height: 45px; }
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .btn { transition: none; }
+}
+
 /* Login Styles */
 .login-container {
   min-height: 100vh;

@@ -63,49 +63,8 @@ const Calc = () => {
         </div>
 
         <div>
-          <button type="button"
-            onClick={increase}
-            style={{
-              width: '60px',
-              height: '45px',
-              margin: '8px',
-              fontSize: '20px',
-              background: 'lightgreen',
-              borderRadius: '6px',
-              border: 'none',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-            }}
-            onMouseOver={(e) =>
-              (e.target.style.boxShadow =
-                '0 0 20px 5px rgba(0, 255, 0, 0.6)')
-            }
-            onMouseOut={(e) => (e.target.style.boxShadow = 'none')}
-          >
-            +
-          </button>
-
-          <button type="button"
-            onClick={decrease}
-            style={{
-              width: '60px',
-              height: '45px',
-              margin: '8px',
-              fontSize: '20px',
-              background: 'lightcoral',
-              borderRadius: '6px',
-              border: 'none',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-            }}
-            onMouseOver={(e) =>
-              (e.target.style.boxShadow =
-                '0 0 20px 5px rgba(255, 0, 0, 0.6)')
-            }
-            onMouseOut={(e) => (e.target.style.boxShadow = 'none')}
-          >
-            -
-          </button>
+          <button type="button" className="btn btn-increment" onClick={increase} aria-label="Increase value">+</button>
+          <button type="button" className="btn btn-decrement" onClick={decrease} aria-label="Decrease value">−</button>
         </div>
       </fieldset>
     </div>

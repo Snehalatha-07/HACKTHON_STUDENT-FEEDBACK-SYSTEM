@@ -74,23 +74,7 @@ const Todolist = () => {
               fontSize: '14px',
             }}
           />
-          <button type="button"
-            onClick={addTask}
-            style={{
-              marginLeft: '10px',
-              padding: '10px 15px',
-              backgroundColor: '#28a745',
-              color: 'white',
-              border: 'none',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              transition: 'background 0.3s',
-            }}
-            onMouseOver={(e) => (e.target.style.backgroundColor = '#218838')}
-            onMouseOut={(e) => (e.target.style.backgroundColor = '#28a745')}
-          >
-            Add
-          </button>
+          <button type="button" className="btn btn-add" onClick={addTask} aria-label="Add task">Add</button>
         </div>
 
         {/* Task List */}
@@ -133,23 +117,7 @@ const Todolist = () => {
                 </small>
               </div>
 
-              <button type="button"
-                onClick={() => deleteTask(index)}
-                style={{
-                  backgroundColor: '#dc3545',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  padding: '6px 10px',
-                  cursor: 'pointer',
-                  fontSize: '13px',
-                  transition: 'background 0.3s',
-                }}
-                onMouseOver={(e) => (e.target.style.backgroundColor = '#c82333')}
-                onMouseOut={(e) => (e.target.style.backgroundColor = '#dc3545')}
-              >
-                Delete
-              </button>
+              <button type="button" className="btn btn-delete" onClick={() => deleteTask(index)} aria-label={`Delete task ${index + 1}`}>Delete</button>
             </li>
           ))}
         </ul>
