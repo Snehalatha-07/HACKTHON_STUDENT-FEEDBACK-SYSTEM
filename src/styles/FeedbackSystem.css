@@ -293,6 +293,13 @@ button:focus, .tab-btn:focus, .nav-link:focus, .login-btn:focus, input:focus, se
   outline-offset: 2px;
 }
 
+/* Prefer showing a stronger focus ring only when using keyboard */
+.tab-btn:focus-visible, .logout-btn:focus-visible, .theme-toggle:focus-visible, .login-btn:focus-visible {
+  outline: 3px solid rgba(14,165,164,0.26);
+  outline-offset: 3px;
+  box-shadow: 0 6px 18px rgba(14,165,164,0.08);
+}
+
 input, select, textarea {
   transition: box-shadow 160ms ease, border-color 160ms ease;
 }
@@ -309,6 +316,11 @@ input, select, textarea {
 /* Toast animation */
 .app-toast { transform: translateY(0); animation: toast-in 300ms ease; }
 @keyframes toast-in { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+/* Subtle hover + press micro-interaction for form controls */
+.form-group input:active, .form-group select:active, .login-btn:active, .tab-btn:active {
+  transform: translateY(1px) scale(0.998);
+}
 
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {

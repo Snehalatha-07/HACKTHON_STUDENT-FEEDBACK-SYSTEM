@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useFeedback } from '../context/FeedbackContext';
 import Toast from './Toast';
@@ -7,6 +7,8 @@ import { normalizeUserInput } from '../utils/authUtils';
 const Auth = () => {
   const { user, setUser } = useFeedback();
   const [tab, setTab] = useState('login');
+  const loginTabRef = useRef(null);
+  const registerTabRef = useRef(null);
   const [toast, setToast] = useState(null);
 
   const [loginData, setLoginData] = useState({ username: '', role: 'student', remember: false });
@@ -56,21 +58,60 @@ const Auth = () => {
     setTimeout(() => setToast(null), 2500);
   };
 
+  const handleTabKeyDown = (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+      e.preventDefault();
+      setTab((t) => (t === 'login' ? 'register' : 'login'));
+      // Move focus to the newly active tab
+      setTimeout(() => {
+        if (tab === 'login') {
+          registerTabRef.current && registerTabRef.current.focus();
+        } else {
+          loginTabRef.current && loginTabRef.current.focus();
+        }
+      }, 0);
+    }
+  };
+
   return (
     <div className="login-container">
       <div className="login-card">
-        <div className="auth-tabs">
-          <button className={`tab-btn ${tab === 'login' ? 'active' : ''}`} onClick={() => setTab('login')}>Login</button>
-          <button className={`tab-btn ${tab === 'register' ? 'active' : ''}`} onClick={() => setTab('register')}>Sign Up</button>
+        <div className="auth-tabs" role="tablist" aria-label="Authentication tabs">
+          <button
+            ref={loginTabRef}
+            id="tab-login"
+            role="tab"
+            type="button"
+            aria-selected={tab === 'login'}
+            aria-controls="login-panel"
+            className={`tab-btn ${tab === 'login' ? 'active' : ''}`}
+            onClick={() => setTab('login')}
+            onKeyDown={handleTabKeyDown}
+          >
+            Login
+          </button>
+          <button
+            ref={registerTabRef}
+            id="tab-register"
+            role="tab"
+            type="button"
+            aria-selected={tab === 'register'}
+            aria-controls="register-panel"
+            className={`tab-btn ${tab === 'register' ? 'active' : ''}`}
+            onClick={() => setTab('register')}
+            onKeyDown={handleTabKeyDown}
+          >
+            Sign Up
+          </button>
         </div>
 
         {tab === 'login' ? (
-          <form className="login-form" onSubmit={handleLogin} noValidate aria-label="Login form">
+          <form id="login-panel" role="tabpanel" aria-labelledby="tab-login" className="login-form" onSubmit={handleLogin} noValidate aria-label="Login form">
             <h2>Welcome Back</h2>
             <div className="form-group">
               <label htmlFor="login-username">Name or ID</label>
-              <input id="login-username" name="username" value={loginData.username} onChange={(e) => setLoginData(prev => ({...prev, username: e.target.value}))} placeholder="Enter your name or ID" aria-required="true" />
-              {errors.username && <div className="field-error">{errors.username}</div>}
+              <input id="login-username" name="username" value={loginData.username} onChange={(e) => setLoginData(prev => ({...prev, username: e.target.value}))} placeholder="Enter your name or ID" aria-required="true" aria-describedby={errors.username ? 'login-username-error' : undefined} />
+              {errors.username && <div id="login-username-error" className="field-error">{errors.username}</div>}
             </div>
 
             <div className="form-group">
@@ -90,12 +131,12 @@ const Auth = () => {
             <button className="login-btn" type="submit">Login</button>
           </form>
         ) : (
-          <form className="login-form" onSubmit={handleRegister} noValidate aria-label="Registration form">
+          <form id="register-panel" role="tabpanel" aria-labelledby="tab-register" className="login-form" onSubmit={handleRegister} noValidate aria-label="Registration form">
             <h2>Create Account</h2>
             <div className="form-group">
               <label htmlFor="reg-username">Name or ID</label>
-              <input id="reg-username" name="username" value={registerData.username} onChange={(e) => setRegisterData(prev => ({...prev, username: e.target.value}))} placeholder="Enter your name or ID" aria-required="true" />
-              {errors.username && <div className="field-error">{errors.username}</div>}
+              <input id="reg-username" name="username" value={registerData.username} onChange={(e) => setRegisterData(prev => ({...prev, username: e.target.value}))} placeholder="Enter your name or ID" aria-required="true" aria-describedby={errors.username ? 'reg-username-error' : undefined} />
+              {errors.username && <div id="reg-username-error" className="field-error">{errors.username}</div>}
             </div>
 
             <div className="form-group">
@@ -108,8 +149,8 @@ const Auth = () => {
 
             <div className="form-group">
               <label htmlFor="reg-password">Password</label>
-              <input id="reg-password" type="password" value={registerData.password} onChange={(e) => setRegisterData(prev => ({...prev, password: e.target.value}))} aria-required="true" />
-              {errors.password && <div className="field-error">{errors.password}</div>}
+              <input id="reg-password" type="password" value={registerData.password} onChange={(e) => setRegisterData(prev => ({...prev, password: e.target.value}))} aria-required="true" aria-describedby={errors.password ? 'reg-password-error' : undefined} />
+              {errors.password && <div id="reg-password-error" className="field-error">{errors.password}</div>}
             </div>
 
             <div className="form-group form-remember">

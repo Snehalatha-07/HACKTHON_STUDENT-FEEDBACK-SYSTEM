@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useFeedback } from '../context/FeedbackContext';
+import HeroIllustration from './HeroIllustration';
 
 const Home = () => {
   const { user } = useFeedback();
@@ -56,6 +57,7 @@ const Home = () => {
   return (
     <div className="home-container">
       <div className="hero-section hero-animated">
+        <HeroIllustration />
         <h1>Student Feedback & Evaluation System</h1>
         <p className="hero-subtitle">
           Collect and analyze student feedback to improve educational experiences

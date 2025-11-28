@@ -33,13 +33,13 @@ const RegForm = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className="login-form" aria-label="Registration form">
+      <form id="reg-form" onSubmit={handleSubmit} className="login-form" aria-label="Registration form">
         <h2>Create Account</h2>
 
         <div className="form-group">
           <label htmlFor="nameOrId">Name or ID</label>
-          <input id="nameOrId" value={form.nameOrId} onChange={(e) => setForm(prev => ({ ...prev, nameOrId: e.target.value }))} placeholder="Enter your name or ID" />
-          {errors.nameOrId && <div className="field-error">{errors.nameOrId}</div>}
+          <input id="nameOrId" autoFocus value={form.nameOrId} onChange={(e) => setForm(prev => ({ ...prev, nameOrId: e.target.value }))} placeholder="Enter your name or ID" aria-required="true" aria-describedby={errors.nameOrId ? 'reg-nameOrId-error' : undefined} />
+          {errors.nameOrId && <div id="reg-nameOrId-error" className="field-error">{errors.nameOrId}</div>}
         </div>
 
         <div className="form-group">
@@ -49,8 +49,8 @@ const RegForm = () => {
 
         <div className="form-group">
           <label htmlFor="password">Password</label>
-          <input id="password" type="password" value={form.password} onChange={(e) => setForm(prev => ({ ...prev, password: e.target.value }))} />
-          {errors.password && <div className="field-error">{errors.password}</div>}
+          <input id="password" type="password" value={form.password} onChange={(e) => setForm(prev => ({ ...prev, password: e.target.value }))} aria-required="true" aria-describedby={errors.password ? 'reg-password-error' : undefined} />
+          {errors.password && <div id="reg-password-error" className="field-error">{errors.password}</div>}
         </div>
 
         <div className="form-group">
@@ -63,7 +63,7 @@ const RegForm = () => {
 
         <div className="form-group form-remember">
           <label>
-            <input type="checkbox" checked={form.remember} onChange={(e) => setForm(prev => ({ ...prev, remember: e.target.checked }))} /> Remember Me
+            <input type="checkbox" checked={form.remember} onChange={(e) => setForm(prev => ({ ...prev, remember: e.target.checked }))} aria-label="Remember me" /> Remember Me
           </label>
         </div>
 

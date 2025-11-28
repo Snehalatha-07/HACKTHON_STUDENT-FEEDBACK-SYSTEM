@@ -24,19 +24,19 @@ const Navigation = () => {
 
   if (!user) {
     return (
-      <nav className="navbar">
+      <nav className="navbar" role="navigation" aria-label="Main navigation">
         <div className="nav-container">
           <Link to="/" className="nav-logo">
             Student Feedback System
           </Link>
           <div className="nav-links">
-            <Link to="/login" className={`nav-link ${isActive('/login') ? 'active' : ''}`}>
+            <Link to="/login" className={`nav-link ${isActive('/login') ? 'active' : ''}`} aria-current={isActive('/login') ? 'page' : undefined}>
               Login
             </Link>
-            <Link to="/register" className={`nav-link ${isActive('/register') ? 'active' : ''}`}>
+            <Link to="/register" className={`nav-link ${isActive('/register') ? 'active' : ''}`} aria-current={isActive('/register') ? 'page' : undefined}>
               Sign Up
             </Link>
-            <button aria-label="Toggle theme" className="theme-toggle" onClick={toggleTheme}>{theme === 'light' ? 'Dark' : 'Light'}</button>
+            <button type="button" aria-label="Toggle theme" aria-pressed={theme === 'dark'} className="theme-toggle" onClick={toggleTheme}>{theme === 'light' ? 'Dark' : 'Light'}</button>
           </div>
         </div>
       </nav>
@@ -44,7 +44,7 @@ const Navigation = () => {
   }
 
   return (
-    <nav className="navbar">
+    <nav className="navbar" role="navigation" aria-label="Main navigation">
       <div className="nav-container">
         <Link to="/" className="nav-logo">
           Student Feedback System
@@ -84,10 +84,10 @@ const Navigation = () => {
           
           <div className="nav-user">
             <span className="user-name">Welcome, {user.name || user.id}</span>
-            <button aria-label="Logout" onClick={handleLogout} className="logout-btn">
+            <button type="button" aria-label="Logout" onClick={handleLogout} className="logout-btn">
               Logout
             </button>
-            <button aria-label="Toggle theme" className="theme-toggle" onClick={toggleTheme}>{theme === 'light' ? 'Dark' : 'Light'}</button>
+            <button type="button" aria-label="Toggle theme" aria-pressed={theme === 'dark'} className="theme-toggle" onClick={toggleTheme}>{theme === 'light' ? 'Dark' : 'Light'}</button>
           </div>
         </div>
       </div>
