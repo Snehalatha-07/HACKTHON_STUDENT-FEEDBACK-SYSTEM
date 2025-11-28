@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "smoke": "echo \"Smoke: run basic checks\" && exit 0"
+    "smoke": "npm run build && node scripts/smoke.js"
   },
   "dependencies": {
     "react": "^19.1.1",
