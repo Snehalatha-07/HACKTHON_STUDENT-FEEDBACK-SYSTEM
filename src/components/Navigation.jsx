@@ -36,7 +36,7 @@ const Navigation = () => {
             <Link to="/register" className={`nav-link ${isActive('/register') ? 'active' : ''}`} aria-current={isActive('/register') ? 'page' : undefined}>
               Sign Up
             </Link>
-            <button type="button" aria-label="Toggle theme" aria-pressed={theme === 'dark'} className="theme-toggle" onClick={toggleTheme}>{theme === 'light' ? 'Dark' : 'Light'}</button>
+            <button type="button" aria-label="Toggle theme" aria-pressed={theme === 'dark'} className="btn theme-toggle" onClick={toggleTheme}>{theme === 'light' ? 'Dark' : 'Light'}</button>
           </div>
         </div>
       </nav>
@@ -84,10 +84,10 @@ const Navigation = () => {
           
           <div className="nav-user">
             <span className="user-name">Welcome, {user.name || user.id}</span>
-            <button type="button" aria-label="Logout" onClick={handleLogout} className="logout-btn">
+            <button type="button" aria-label="Logout" onClick={handleLogout} className="btn logout-btn">
               Logout
             </button>
-            <button type="button" aria-label="Toggle theme" aria-pressed={theme === 'dark'} className="theme-toggle" onClick={toggleTheme}>{theme === 'light' ? 'Dark' : 'Light'}</button>
+            <button type="button" aria-label="Toggle theme" aria-pressed={theme === 'dark'} className="btn theme-toggle" onClick={toggleTheme}>{theme === 'light' ? 'Dark' : 'Light'}</button>
           </div>
         </div>
       </div>

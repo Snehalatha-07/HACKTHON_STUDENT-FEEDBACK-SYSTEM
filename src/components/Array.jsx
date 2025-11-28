@@ -68,7 +68,7 @@ const Array = () => {
               <td>{element.esal}</td>
               {deleteMode && (
                 <td>
-                  <button type="button" onClick={() => deleteRow(element.eid)}>Delete</button>
+                  <button type="button" onClick={() => deleteRow(element.eid)} className="btn btn-danger-small">Delete</button>
                 </td>
               )}
             </tr>
@@ -104,8 +104,8 @@ const Array = () => {
                   onChange={handleChange}
                 />
               </td>
-              <td>
-                <button type="button" onClick={proceed}>Proceed</button>
+                <td>
+                <button type="button" onClick={proceed} className="btn btn-primary">Proceed</button>
               </td>
             </tr>
           )}
@@ -114,10 +114,10 @@ const Array = () => {
 
       <br />
 
-      <button type="button" onClick={addEmp} disabled={editingRow}>
+      <button type="button" onClick={addEmp} disabled={editingRow} className="btn btn-primary">
         Add emp
       </button>
-      <button type="button" onClick={delEmp} disabled={deleteMode}>
+      <button type="button" onClick={delEmp} disabled={deleteMode} className="btn btn-secondary">
         Del emp
       </button>
     </div>

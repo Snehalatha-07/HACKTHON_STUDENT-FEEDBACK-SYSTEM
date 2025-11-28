@@ -67,7 +67,7 @@ const RegForm = () => {
           </label>
         </div>
 
-        <button className="login-btn" type="submit">Sign Up</button>
+        <button className="btn login-btn" type="submit">Sign Up</button>
       </form>
       <Toast message={toast} onClose={() => setToast(null)} />
     </div>

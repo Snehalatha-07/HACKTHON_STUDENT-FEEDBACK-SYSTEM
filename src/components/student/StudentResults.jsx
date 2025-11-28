@@ -130,7 +130,7 @@ const StudentResults = () => {
     return (
       <div className="student-results">
         <div className="results-header">
-          <button type="button" onClick={() => setSelectedForm(null)} className="btn-secondary">
+          <button type="button" onClick={() => setSelectedForm(null)} className="btn btn-secondary">
             ← Back to Results
           </button>
           <div className="form-info">
@@ -272,7 +272,7 @@ const StudentResults = () => {
                   <button 
                     type="button"
                     onClick={() => setSelectedForm(form)}
-                    className="btn-primary"
+                    className="btn btn-primary"
                   >
                     View Details
                   </button>

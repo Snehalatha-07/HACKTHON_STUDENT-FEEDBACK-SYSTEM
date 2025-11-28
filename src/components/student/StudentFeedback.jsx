@@ -156,7 +156,7 @@ const StudentFeedback = () => {
     return (
       <div className="student-feedback">
         <div className="feedback-header">
-          <button type="button" onClick={() => setSelectedForm(null)} className="btn-secondary">
+          <button type="button" onClick={() => setSelectedForm(null)} className="btn btn-secondary">
             ← Back to Forms
           </button>
           <div className="form-info">
@@ -188,11 +188,11 @@ const StudentFeedback = () => {
               type="button"
               onClick={handleSubmitForm}
               disabled={submitting}
-              className="btn-primary submit-btn"
+              className="btn btn-primary submit-btn"
             >
               {submitting ? 'Submitting...' : 'Submit Feedback'}
             </button>
-            <button type="button" onClick={() => setSelectedForm(null)} className="btn-secondary">
+            <button type="button" onClick={() => setSelectedForm(null)} className="btn btn-secondary">
               Cancel
             </button>
           </div>
@@ -259,8 +259,9 @@ const StudentFeedback = () => {
 
                 <div className="form-card-actions">
                   <button 
+                    type="button"
                     onClick={() => setSelectedForm(form)}
-                    className="btn-primary"
+                    className="btn btn-primary"
                   >
                     Start Feedback
                   </button>

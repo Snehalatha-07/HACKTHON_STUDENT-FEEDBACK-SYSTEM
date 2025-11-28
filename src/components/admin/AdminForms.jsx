@@ -100,7 +100,7 @@ const AdminForms = () => {
       <div className="admin-forms">
         <div className="form-header">
           <h2>{editingForm ? 'Edit Form' : 'Create New Form'}</h2>
-          <button type="button" onClick={resetForm} className="btn-secondary">Cancel</button>
+          <button type="button" onClick={resetForm} className="btn btn-secondary">Cancel</button>
         </div>
 
         <div className="form-builder">
@@ -158,7 +158,7 @@ const AdminForms = () => {
           <div className="questions-section">
             <div className="questions-header">
               <h3>Questions</h3>
-              <button type="button" onClick={addQuestion} className="btn-primary">Add Question</button>
+              <button type="button" onClick={addQuestion} className="btn btn-primary">Add Question</button>
             </div>
 
             <div className="questions-list">
@@ -166,7 +166,7 @@ const AdminForms = () => {
                 <div key={question.id} className="question-item">
                   <div className="question-header">
                     <span>Question {index + 1}</span>
-                    <button type="button" onClick={() => removeQuestion(index)} className="btn-danger-small">Remove</button>
+                    <button type="button" onClick={() => removeQuestion(index)} className="btn btn-danger-small">Remove</button>
                   </div>
 
                   <div className="question-fields">
@@ -225,10 +225,10 @@ const AdminForms = () => {
           </div>
 
           <div className="form-actions">
-            <button type="button" onClick={handleSaveForm} className="btn-primary">
+            <button type="button" onClick={handleSaveForm} className="btn btn-primary">
               {editingForm ? 'Update Form' : 'Create Form'}
             </button>
-            <button type="button" onClick={resetForm} className="btn-secondary">Cancel</button>
+            <button type="button" onClick={resetForm} className="btn btn-secondary">Cancel</button>
           </div>
         </div>
       </div>
@@ -240,13 +240,13 @@ const AdminForms = () => {
       <div className="page-header">
         <h2>Manage Feedback Forms</h2>
         <div className="header-actions">
-          <button type="button" onClick={() => handleCreateForm('course')} className="btn-primary">
+          <button type="button" onClick={() => handleCreateForm('course')} className="btn btn-primary">
             Create Course Form
           </button>
-          <button type="button" onClick={() => handleCreateForm('instructor')} className="btn-primary">
+          <button type="button" onClick={() => handleCreateForm('instructor')} className="btn btn-primary">
             Create Instructor Form
           </button>
-          <button type="button" onClick={() => handleCreateForm()} className="btn-secondary">
+          <button type="button" onClick={() => handleCreateForm()} className="btn btn-secondary">
             Create Custom Form
           </button>
         </div>
@@ -264,8 +264,8 @@ const AdminForms = () => {
               <div className="form-card-header">
                 <h3>{form.title}</h3>
                 <div className="form-actions">
-                  <button type="button" onClick={() => handleEditForm(form)} className="btn-small">Edit</button>
-                  <button type="button" onClick={() => handleDeleteForm(form.id)} className="btn-danger-small">Delete</button>
+                  <button type="button" onClick={() => handleEditForm(form)} className="btn btn-small">Edit</button>
+                  <button type="button" onClick={() => handleDeleteForm(form.id)} className="btn btn-danger-small">Delete</button>
                 </div>
               </div>
               <div className="form-card-body">

@@ -74,7 +74,7 @@ const AdminAnalytics = () => {
     return (
       <div className="admin-analytics">
         <div className="analytics-header">
-          <button type="button" onClick={() => setSelectedForm(null)} className="btn-secondary">← Back to Forms</button>
+          <button type="button" onClick={() => setSelectedForm(null)} className="btn btn-secondary">← Back to Forms</button>
           <h2>Analytics: {selectedForm.title}</h2>
         </div>
 
@@ -203,7 +203,7 @@ const AdminAnalytics = () => {
                     <button 
                       type="button"
                       onClick={() => setSelectedForm(form)}
-                      className="btn-primary"
+                      className="btn btn-primary"
                       disabled={responses.length === 0}
                     >
                       {responses.length === 0 ? 'No Data' : 'View Details'}

@@ -247,12 +247,12 @@ const DemoSeedControls = () => {
     <div className="demo-seed-controls">
       <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 8 }}>
         <label style={{ fontWeight: 600 }}>Seed Demo Forms:</label>
-        <button type="button" className="btn-small" onClick={() => setEnabled(true)} aria-pressed={enabled}>Enable</button>
-        <button type="button" className="btn-small" onClick={() => setEnabled(false)} aria-pressed={!enabled}>Disable</button>
+        <button type="button" className="btn btn-small" onClick={() => setEnabled(true)} aria-pressed={enabled}>Enable</button>
+        <button type="button" className="btn btn-small" onClick={() => setEnabled(false)} aria-pressed={!enabled}>Disable</button>
       </div>
 
       <div style={{ display: 'flex', gap: 8 }}>
-        <button type="button" className="btn-secondary" onClick={clearSeeded}>Clear seeded forms</button>
+        <button type="button" className="btn btn-secondary" onClick={clearSeeded}>Clear seeded forms</button>
         <small className="login-info">Clears forms created by the demo seeder. This is reversible by enabling seeding and reloading.</small>
       </div>
     </div>

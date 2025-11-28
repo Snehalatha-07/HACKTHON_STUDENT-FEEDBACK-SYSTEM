@@ -28,7 +28,7 @@ const Toast = ({ message, type = 'success', onClose, duration = 3000 }) => {
   return (
     <div className={`app-toast app-toast-${type}`} role="status" aria-live="polite">
       <div className="toast-message">{message}</div>
-      <button type="button" className="toast-close" onClick={handleClose} aria-label="Close notification">×</button>
+      <button type="button" className="btn toast-close" onClick={handleClose} aria-label="Close notification">×</button>
     </div>
   );
 };

@@ -128,7 +128,7 @@ const Auth = () => {
               </label>
             </div>
 
-            <button className="login-btn" type="submit">Login</button>
+            <button className="btn login-btn" type="submit">Login</button>
           </form>
         ) : (
           <form id="register-panel" role="tabpanel" aria-labelledby="tab-register" className="login-form" onSubmit={handleRegister} noValidate aria-label="Registration form">
@@ -159,7 +159,7 @@ const Auth = () => {
               </label>
             </div>
 
-            <button className="login-btn" type="submit">Sign Up</button>
+            <button className="btn login-btn" type="submit">Sign Up</button>
           </form>
         )}
 
