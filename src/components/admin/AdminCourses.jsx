@@ -96,12 +96,14 @@ const AdminCourses = () => {
 
       <div className="tabs">
         <button 
+          type="button"
           className={`tab ${activeTab === 'courses' ? 'active' : ''}`}
           onClick={() => setActiveTab('courses')}
         >
           Courses ({courses.length})
         </button>
         <button 
+          type="button"
           className={`tab ${activeTab === 'instructors' ? 'active' : ''}`}
           onClick={() => setActiveTab('instructors')}
         >
@@ -113,7 +115,7 @@ const AdminCourses = () => {
         <div className="courses-section">
           <div className="section-header">
             <h3>Courses</h3>
-            <button onClick={() => setShowAddCourse(true)} className="btn-primary">
+            <button type="button" onClick={() => setShowAddCourse(true)} className="btn-primary">
               Add Course
             </button>
           </div>
@@ -123,7 +125,7 @@ const AdminCourses = () => {
               <div className="form-content">
                 <div className="form-header">
                   <h4>{editingCourse ? 'Edit Course' : 'Add New Course'}</h4>
-                  <button onClick={resetCourseForm} className="close-btn">×</button>
+                  <button type="button" onClick={resetCourseForm} className="close-btn">×</button>
                 </div>
                 
                 <div className="form-body">
@@ -169,10 +171,10 @@ const AdminCourses = () => {
                 </div>
 
                 <div className="form-actions">
-                  <button onClick={handleSaveCourse} className="btn-primary">
+                  <button type="button" onClick={handleSaveCourse} className="btn-primary">
                     {editingCourse ? 'Update Course' : 'Add Course'}
                   </button>
-                  <button onClick={resetCourseForm} className="btn-secondary">Cancel</button>
+                  <button type="button" onClick={resetCourseForm} className="btn-secondary">Cancel</button>
                 </div>
               </div>
             </div>
@@ -190,8 +192,8 @@ const AdminCourses = () => {
                   <div className="course-header">
                     <h4>{course.name}</h4>
                     <div className="course-actions">
-                      <button onClick={() => handleEditCourse(course)} className="btn-small">Edit</button>
-                      <button onClick={() => handleDeleteCourse(course.id)} className="btn-danger-small">Delete</button>
+                      <button type="button" onClick={() => handleEditCourse(course)} className="btn-small">Edit</button>
+                      <button type="button" onClick={() => handleDeleteCourse(course.id)} className="btn-danger-small">Delete</button>
                     </div>
                   </div>
                   <div className="course-details">
@@ -210,7 +212,7 @@ const AdminCourses = () => {
         <div className="instructors-section">
           <div className="section-header">
             <h3>Instructors</h3>
-            <button onClick={() => setShowAddInstructor(true)} className="btn-primary">
+            <button type="button" onClick={() => setShowAddInstructor(true)} className="btn-primary">
               Add Instructor
             </button>
           </div>
@@ -220,7 +222,7 @@ const AdminCourses = () => {
               <div className="form-content">
                 <div className="form-header">
                   <h4>{editingInstructor ? 'Edit Instructor' : 'Add New Instructor'}</h4>
-                  <button onClick={resetInstructorForm} className="close-btn">×</button>
+                  <button type="button" onClick={resetInstructorForm} className="close-btn">×</button>
                 </div>
                 
                 <div className="form-body">
@@ -266,10 +268,10 @@ const AdminCourses = () => {
                 </div>
 
                 <div className="form-actions">
-                  <button onClick={handleSaveInstructor} className="btn-primary">
+                  <button type="button" onClick={handleSaveInstructor} className="btn-primary">
                     {editingInstructor ? 'Update Instructor' : 'Add Instructor'}
                   </button>
-                  <button onClick={resetInstructorForm} className="btn-secondary">Cancel</button>
+                  <button type="button" onClick={resetInstructorForm} className="btn-secondary">Cancel</button>
                 </div>
               </div>
             </div>
@@ -287,8 +289,8 @@ const AdminCourses = () => {
                   <div className="instructor-header">
                     <h4>{instructor.name}</h4>
                     <div className="instructor-actions">
-                      <button onClick={() => handleEditInstructor(instructor)} className="btn-small">Edit</button>
-                      <button onClick={() => handleDeleteInstructor(instructor.id)} className="btn-danger-small">Delete</button>
+                      <button type="button" onClick={() => handleEditInstructor(instructor)} className="btn-small">Edit</button>
+                      <button type="button" onClick={() => handleDeleteInstructor(instructor.id)} className="btn-danger-small">Delete</button>
                     </div>
                   </div>
                   <div className="instructor-details">

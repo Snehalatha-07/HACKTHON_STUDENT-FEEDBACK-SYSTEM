@@ -74,7 +74,7 @@ const Todolist = () => {
               fontSize: '14px',
             }}
           />
-          <button
+          <button type="button"
             onClick={addTask}
             style={{
               marginLeft: '10px',
@@ -133,7 +133,7 @@ const Todolist = () => {
                 </small>
               </div>
 
-              <button
+              <button type="button"
                 onClick={() => deleteTask(index)}
                 style={{
                   backgroundColor: '#dc3545',

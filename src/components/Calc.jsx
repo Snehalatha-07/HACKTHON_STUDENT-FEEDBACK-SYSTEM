@@ -63,7 +63,7 @@ const Calc = () => {
         </div>
 
         <div>
-          <button
+          <button type="button"
             onClick={increase}
             style={{
               width: '60px',
@@ -85,7 +85,7 @@ const Calc = () => {
             +
           </button>
 
-          <button
+          <button type="button"
             onClick={decrease}
             style={{
               width: '60px',
