@@ -228,7 +228,37 @@ export const initializeDefaultData = () => {
 
   // Initialize feedback forms if not present
   if (!storageUtils.loadFromStorage('feedbackForms')) {
-    storageUtils.saveToStorage('feedbackForms', []);
+    // Seed demo forms for each sample course and instructor so students can submit feedback immediately
+    const seededForms = [];
+    sampleCourses.forEach(course => {
+      const template = defaultFormTemplates.course;
+      seededForms.push({
+        id: generateId(),
+        title: `${template.title} - ${course.name}`,
+        description: `Please provide feedback for ${course.name}`,
+        targetType: 'course',
+        targetId: course.id,
+        questions: template.questions.map(q => ({ ...q, id: generateId() })),
+        createdAt: new Date().toISOString(),
+        isActive: true
+      });
+    });
+
+    sampleInstructors.forEach(instr => {
+      const template = defaultFormTemplates.instructor;
+      seededForms.push({
+        id: generateId(),
+        title: `${template.title} - ${instr.name}`,
+        description: `Please provide feedback for ${instr.name}`,
+        targetType: 'instructor',
+        targetId: instr.id,
+        questions: template.questions.map(q => ({ ...q, id: generateId() })),
+        createdAt: new Date().toISOString(),
+        isActive: true
+      });
+    });
+
+    storageUtils.saveToStorage('feedbackForms', seededForms);
   }
 
   // Initialize feedback responses if not present
