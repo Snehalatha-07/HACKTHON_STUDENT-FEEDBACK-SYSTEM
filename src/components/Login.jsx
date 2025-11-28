@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useFeedback } from '../context/FeedbackContext';
+import { normalizeUserInput } from '../utils/authUtils';
 
 const Login = () => {
   const { user, setUser } = useFeedback();
@@ -27,7 +28,6 @@ const Login = () => {
     if (loginData.username.trim()) {
       // Simple authentication - in a real app, this would be validated against a backend
       // normalize using helper
-      const { normalizeUserInput } = await import('../utils/authUtils');
       const normalized = normalizeUserInput(loginData.username);
       const newUser = {
         id: normalized.id,
