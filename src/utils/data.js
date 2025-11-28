@@ -228,39 +228,47 @@ export const initializeDefaultData = () => {
 
   // Initialize feedback forms if not present
   if (!storageUtils.loadFromStorage('feedbackForms')) {
-    // Seed demo forms for each sample course and instructor so students can submit feedback immediately
-    const seededForms = [];
-    sampleCourses.forEach(course => {
-      const template = defaultFormTemplates.course;
-      seededForms.push({
-        id: generateId(),
-        title: `${template.title} - ${course.name}`,
-        description: `Please provide feedback for ${course.name}`,
-        targetType: 'course',
-        targetId: course.id,
-        questions: template.questions.map(q => ({ ...q, id: generateId() })),
-        createdAt: new Date().toISOString(),
-        isActive: true,
-        seeded: true
-      });
-    });
+    // Respect admin-controlled seeding flag. Default to true when flag is missing.
+    const shouldSeed = storageUtils.loadFromStorage('seedDemoForms', true);
 
-    sampleInstructors.forEach(instr => {
-      const template = defaultFormTemplates.instructor;
-      seededForms.push({
-        id: generateId(),
-        title: `${template.title} - ${instr.name}`,
-        description: `Please provide feedback for ${instr.name}`,
-        targetType: 'instructor',
-        targetId: instr.id,
-        questions: template.questions.map(q => ({ ...q, id: generateId() })),
-        createdAt: new Date().toISOString(),
-        isActive: true,
-        seeded: true
+    if (shouldSeed) {
+      // Seed demo forms for each sample course and instructor so students can submit feedback immediately
+      const seededForms = [];
+      sampleCourses.forEach(course => {
+        const template = defaultFormTemplates.course;
+        seededForms.push({
+          id: generateId(),
+          title: `${template.title} - ${course.name}`,
+          description: `Please provide feedback for ${course.name}`,
+          targetType: 'course',
+          targetId: course.id,
+          questions: template.questions.map(q => ({ ...q, id: generateId() })),
+          createdAt: new Date().toISOString(),
+          isActive: true,
+          seeded: true
+        });
       });
-    });
 
-    storageUtils.saveToStorage('feedbackForms', seededForms);
+      sampleInstructors.forEach(instr => {
+        const template = defaultFormTemplates.instructor;
+        seededForms.push({
+          id: generateId(),
+          title: `${template.title} - ${instr.name}`,
+          description: `Please provide feedback for ${instr.name}`,
+          targetType: 'instructor',
+          targetId: instr.id,
+          questions: template.questions.map(q => ({ ...q, id: generateId() })),
+          createdAt: new Date().toISOString(),
+          isActive: true,
+          seeded: true
+        });
+      });
+
+      storageUtils.saveToStorage('feedbackForms', seededForms);
+    } else {
+      // Create an empty array so app logic can rely on its existence
+      storageUtils.saveToStorage('feedbackForms', []);
+    }
   }
 
   // Initialize feedback responses if not present
