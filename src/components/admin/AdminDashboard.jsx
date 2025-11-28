@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useFeedback } from '../../context/FeedbackContext';
+import { storageUtils } from '../../utils/data';
 
 const AdminDashboard = () => {
   const { feedbackForms, feedbackResponses, courses, instructors } = useFeedback();
@@ -61,6 +62,16 @@ const AdminDashboard = () => {
             <p>Instructors</p>
             <span className="stat-detail">Faculty members</span>
           </div>
+        </div>
+      </div>
+
+      <div className="dashboard-section">
+        <div className="section-header">
+          <h3>Demo Data</h3>
+        </div>
+        <div className="demo-controls">
+          <p>Control seeding of demo feedback forms used for demos and testing.</p>
+          <DemoSeedControls />
         </div>
       </div>
 
@@ -163,3 +174,38 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
+
+// Small component for toggling demo seeding
+const DemoSeedControls = () => {
+  const [enabled, setEnabled] = useState(() => {
+    const val = storageUtils.loadFromStorage('seedDemoForms');
+    return typeof val === 'boolean' ? val : true;
+  });
+
+  useEffect(() => {
+    storageUtils.saveToStorage('seedDemoForms', enabled);
+  }, [enabled]);
+
+  const clearSeeded = () => {
+    const forms = storageUtils.loadFromStorage('feedbackForms', []);
+    const remaining = forms.filter(f => !f.seeded);
+    storageUtils.saveToStorage('feedbackForms', remaining);
+    // also update in-memory store by reloading the page (simple approach)
+    window.location.reload();
+  };
+
+  return (
+    <div className="demo-seed-controls">
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 8 }}>
+        <label style={{ fontWeight: 600 }}>Seed Demo Forms:</label>
+        <button type="button" className="btn-small" onClick={() => setEnabled(true)} aria-pressed={enabled}>Enable</button>
+        <button type="button" className="btn-small" onClick={() => setEnabled(false)} aria-pressed={!enabled}>Disable</button>
+      </div>
+
+      <div style={{ display: 'flex', gap: 8 }}>
+        <button type="button" className="btn-secondary" onClick={clearSeeded}>Clear seeded forms</button>
+        <small className="login-info">Clears forms created by the demo seeder. This is reversible by enabling seeding and reloading.</small>
+      </div>
+    </div>
+  );
+};

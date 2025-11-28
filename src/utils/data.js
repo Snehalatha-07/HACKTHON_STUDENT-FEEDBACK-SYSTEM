@@ -240,7 +240,8 @@ export const initializeDefaultData = () => {
         targetId: course.id,
         questions: template.questions.map(q => ({ ...q, id: generateId() })),
         createdAt: new Date().toISOString(),
-        isActive: true
+        isActive: true,
+        seeded: true
       });
     });
 
@@ -254,7 +255,8 @@ export const initializeDefaultData = () => {
         targetId: instr.id,
         questions: template.questions.map(q => ({ ...q, id: generateId() })),
         createdAt: new Date().toISOString(),
-        isActive: true
+        isActive: true,
+        seeded: true
       });
     });
 
