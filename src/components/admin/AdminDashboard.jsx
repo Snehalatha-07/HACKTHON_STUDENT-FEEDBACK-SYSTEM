@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useFeedback } from '../../context/FeedbackContext';
-import { storageUtils } from '../../utils/data';
+import { storageUtils, generateId } from '../../utils/data';
 
 const AdminDashboard = () => {
   const { feedbackForms, feedbackResponses, courses, instructors } = useFeedback();
@@ -187,10 +187,59 @@ const DemoSeedControls = () => {
   }, [enabled]);
 
   const clearSeeded = () => {
+    if (!confirm('Remove all demo-seeded forms? This cannot be undone.')) return;
     const forms = storageUtils.loadFromStorage('feedbackForms', []);
     const remaining = forms.filter(f => !f.seeded);
     storageUtils.saveToStorage('feedbackForms', remaining);
     // also update in-memory store by reloading the page (simple approach)
+    window.location.reload();
+  };
+
+  const seedResponses = () => {
+    if (!confirm('Create sample responses for seeded forms?')) return;
+    const forms = storageUtils.loadFromStorage('feedbackForms', []);
+    const seeded = forms.filter(f => f.seeded);
+    if (!seeded.length) {
+      alert('No seeded forms found to create responses for.');
+      return;
+    }
+
+    const existing = storageUtils.loadFromStorage('feedbackResponses', []);
+    const newResponses = [];
+
+    const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+    seeded.forEach(form => {
+      // create 3 demo responses per form
+      for (let i = 0; i < 3; i++) {
+        const answers = {};
+        form.questions.forEach(q => {
+          if (q.type === 'rating') {
+            const min = (q.scale && q.scale.min) || 1;
+            const max = (q.scale && q.scale.max) || 5;
+            answers[q.id] = randInt(min, max);
+          } else if (q.type === 'yes_no') {
+            answers[q.id] = Math.random() > 0.3 ? 'Yes' : 'No';
+          } else if (q.type === 'multiple_choice') {
+            answers[q.id] = (q.options && q.options[0]) || 'Option A';
+          } else if (q.type === 'text') {
+            answers[q.id] = 'This is a sample response to help demonstrate results.';
+          }
+        });
+
+        newResponses.push({
+          id: generateId(),
+          formId: form.id,
+          answers,
+          studentId: `demo_${Math.random().toString(36).slice(2,8)}`,
+          submittedAt: new Date().toISOString()
+        });
+      }
+    });
+
+    const combined = existing.concat(newResponses);
+    storageUtils.saveToStorage('feedbackResponses', combined);
+    alert(`Created ${newResponses.length} demo responses.`);
     window.location.reload();
   };
 
