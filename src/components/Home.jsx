@@ -55,7 +55,7 @@ const Home = () => {
   // If user is not logged in, show welcome page
   return (
     <div className="home-container">
-      <div className="hero-section">
+      <div className="hero-section hero-animated">
         <h1>Student Feedback & Evaluation System</h1>
         <p className="hero-subtitle">
           Collect and analyze student feedback to improve educational experiences
