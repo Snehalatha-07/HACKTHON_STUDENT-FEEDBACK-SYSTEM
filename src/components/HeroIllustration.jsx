@@ -3,19 +3,33 @@ import React from 'react';
 const HeroIllustration = () => {
   return (
     <div className="hero-illustration" aria-hidden="true">
-      <svg width="360" height="220" viewBox="0 0 360 220" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true" role="img">
+      <svg width="420" height="320" viewBox="0 0 420 320" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true" role="img">
         <defs>
           <linearGradient id="g1" x1="0" x2="1">
-            <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="#0ea5a4" stopOpacity="0.9" />
+            <stop offset="0%" stopColor="#6366f1" stopOpacity="0.95" />
+            <stop offset="100%" stopColor="#06b6d4" stopOpacity="0.95" />
           </linearGradient>
         </defs>
-        <g className="float-group">
-          <ellipse cx="60" cy="60" rx="60" ry="40" fill="url(#g1)" className="blob blob-1" />
-          <ellipse cx="200" cy="40" rx="50" ry="30" fill="#7c3aed" className="blob blob-2" opacity="0.9" />
-          <ellipse cx="280" cy="120" rx="70" ry="45" fill="#06b6d4" className="blob blob-3" opacity="0.85" />
-          <circle cx="140" cy="140" r="18" fill="#f97316" className="dot dot-1" />
-          <circle cx="230" cy="70" r="10" fill="#84cc16" className="dot dot-2" />
+
+        <rect x="10" y="20" width="300" height="200" rx="20" fill="url(#g1)" opacity="0.12" />
+
+        <g transform="translate(40,40)">
+          <rect x="0" y="0" width="220" height="140" rx="14" fill="#fff" opacity="0.9" />
+          <rect x="16" y="18" width="188" height="18" rx="6" fill="#f3f4f6" />
+          <rect x="16" y="46" width="140" height="12" rx="6" fill="#eef2ff" />
+          <rect x="16" y="66" width="170" height="12" rx="6" fill="#eef2ff" />
+          <rect x="16" y="86" width="120" height="12" rx="6" fill="#eef2ff" />
+
+          <g transform="translate(160,98)">
+            <circle cx="12" cy="12" r="12" fill="#06b6d4" />
+            <rect x="32" y="2" width="40" height="20" rx="10" fill="#34d399" />
+          </g>
+        </g>
+
+        <g transform="translate(260,20)">
+          <circle cx="60" cy="60" r="60" fill="#fff" opacity="0.06" />
+          <path d="M20 130 C40 110, 80 110, 100 130" stroke="#fb923c" strokeWidth="6" fill="none" strokeLinecap="round" />
+          <circle cx="80" cy="120" r="6" fill="#fb923c" />
         </g>
       </svg>
     </div>
