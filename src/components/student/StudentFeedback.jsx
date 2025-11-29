@@ -2,6 +2,55 @@ import React, { useState } from 'react';
 import { useFeedback } from '../../context/FeedbackContext';
 import { questionTypes } from '../../utils/data';
 
+// Inline quick feedback form (keeps file self-contained)
+const QuickFeedbackForm = ({ courses = [], onSubmit }) => {
+  const [courseId, setCourseId] = useState(courses[0] ? courses[0].id : '');
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState('');
+  const [anonymous, setAnonymous] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!courseId) return alert('Please select a course');
+    if (!rating) return alert('Please provide a rating');
+    onSubmit({ courseId, rating, comment, anonymous });
+    setComment('');
+    setRating(5);
+    setAnonymous(false);
+  };
+
+  return (
+    <form className="quick-feedback-form" onSubmit={handleSubmit} aria-label="Quick feedback form">
+      <div className="form-row">
+        <label>Course</label>
+        <select value={courseId} onChange={e => setCourseId(e.target.value)}>
+          <option value="">Select a course</option>
+          {courses.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+        </select>
+      </div>
+
+      <div className="form-row">
+        <label>Rating</label>
+        <div className="rating-choices">
+          {[1,2,3,4,5].map(n => (
+            <button key={n} type="button" className={`rating-btn ${rating===n? 'active':''}`} onClick={() => setRating(n)} aria-pressed={rating===n}>{n}</button>
+          ))}
+        </div>
+      </div>
+
+      <div className="form-row">
+        <label>Comment</label>
+        <textarea value={comment} onChange={e => setComment(e.target.value)} placeholder="Optional comment" rows={3} />
+      </div>
+
+      <div className="form-row form-row-inline">
+        <label className="inline-label"><input type="checkbox" checked={anonymous} onChange={e => setAnonymous(e.target.checked)} /> Submit anonymously</label>
+        <button type="submit" className="btn btn-primary">Submit</button>
+      </div>
+    </form>
+  );
+};
+
 const StudentFeedback = () => {
   const { feedbackForms, courses, instructors, submitFeedbackResponse } = useFeedback();
   const [selectedForm, setSelectedForm] = useState(null);
@@ -206,6 +255,26 @@ const StudentFeedback = () => {
       <div className="page-header">
         <h2>Give Feedback</h2>
         <p>Share your thoughts and help improve the educational experience</p>
+      </div>
+
+      {/* Quick feedback card */}
+      <div className="quick-feedback-card">
+        <h3>Quick Feedback</h3>
+        <p>Submit a short rating and comment for a course.</p>
+        <QuickFeedbackForm courses={courses} onSubmit={(data) => {
+          // wrap into response shape and submit
+          const response = {
+            formId: data.formId || null,
+            courseId: data.courseId || null,
+            rating: data.rating,
+            comment: data.comment,
+            anonymous: !!data.anonymous,
+            studentId: data.anonymous ? 'anonymous' : (user && user.id) || 'guest'
+          };
+          submitFeedbackResponse(response);
+          // simple UI feedback
+          alert('Thank you — your quick feedback was submitted');
+        }} />
       </div>
 
       {activeForms.length === 0 ? (
