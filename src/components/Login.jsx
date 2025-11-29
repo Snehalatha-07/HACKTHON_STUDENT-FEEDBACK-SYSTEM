@@ -9,6 +9,12 @@ const Login = () => {
     username: '',
     role: 'student'
   });
+  const [showPassword, setShowPassword] = useState(false);
+
+  // include password in state for optional password login
+  if (loginData.password === undefined) {
+    setLoginData(prev => ({ ...prev, password: '' }));
+  }
 
   // If user is already logged in, redirect to appropriate dashboard
   if (user) {
@@ -70,6 +76,24 @@ const Login = () => {
               <option value="student">Student</option>
               <option value="admin">Administrator/Teacher</option>
             </select>
+          </div>
+          <div className="form-group password-field">
+            <label htmlFor="password">Password (optional):</label>
+            <div className="password-input-wrap">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                id="password"
+                name="password"
+                value={loginData.password || ''}
+                onChange={handleInputChange}
+                placeholder="Enter password (if applicable)"
+                aria-describedby="password-help"
+              />
+              <button type="button" className="password-toggle" aria-label={showPassword ? 'Hide password' : 'Show password'} onClick={() => setShowPassword(s => !s)}>
+                {showPassword ? 'Hide' : 'Show'}
+              </button>
+            </div>
+            <small id="password-help" className="field-hint">Leave blank for quick demo login</small>
           </div>
           <div className="form-group form-remember">
             <label>
