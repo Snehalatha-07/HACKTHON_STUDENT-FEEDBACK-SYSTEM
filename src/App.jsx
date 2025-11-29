@@ -12,6 +12,7 @@ import AdminDashboard from './components/admin/AdminDashboard';
 import AdminForms from './components/admin/AdminForms';
 import AdminAnalytics from './components/admin/AdminAnalytics';
 import AdminCourses from './components/admin/AdminCourses';
+import AdminResponses from './components/admin/AdminResponses';
 
 // Student Components
 import StudentDashboard from './components/student/StudentDashboard';
@@ -77,6 +78,14 @@ function AppContent() {
             element={
               <ProtectedRoute requiredRole="admin">
                 <AdminCourses />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/responses" 
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <AdminResponses />
               </ProtectedRoute>
             } 
           />

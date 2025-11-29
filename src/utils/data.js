@@ -276,3 +276,12 @@ export const initializeDefaultData = () => {
     storageUtils.saveToStorage('feedbackResponses', []);
   }
 };
+
+// CSV helper for simple exports
+export const csvEscape = (val) => {
+  const s = val === undefined || val === null ? '' : String(val);
+  if (s.includes('"') || s.includes(',') || s.includes('\n')) {
+    return `"${s.replace(/"/g, '""')}"`;
+  }
+  return s;
+};

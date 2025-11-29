@@ -104,6 +104,14 @@ const AdminDashboard = () => {
                 <p>Add and edit course information</p>
               </div>
             </Link>
+
+            <Link to="/admin/responses" className="action-card">
+              <div className="action-icon">📥</div>
+              <div className="action-content">
+                <h4>View Responses</h4>
+                <p>List, filter and export collected feedback</p>
+              </div>
+            </Link>
           </div>
         </div>
 

@@ -498,6 +498,18 @@ input, select, textarea {
   color: #666;
 }
 
+/* Admin Responses styles */
+.admin-responses .dashboard-header { margin-bottom: 1rem; }
+.admin-responses .filters-row { display:flex; gap:12px; align-items:center; margin-bottom:12px; }
+.admin-responses select, .admin-responses input[type="search"] { padding:8px 10px; border-radius:8px; border:1px solid #e6edf0; }
+.admin-responses input[type="search"] { width: 100%; }
+.admin-responses .responses-table table { width:100%; border-collapse:collapse; background:var(--card-bg); border-radius:8px; overflow:hidden; }
+.admin-responses .responses-table th, .admin-responses .responses-table td { text-align:left; padding:12px 14px; border-bottom:1px solid #f1f5f9; vertical-align:top; }
+.admin-responses .responses-table thead th { background:#fafafa; font-weight:700; }
+.admin-responses .empty-state { padding:28px; text-align:center; color:var(--muted); }
+.admin-responses .btn-outline { background:transparent; border:1px solid rgba(0,0,0,0.06); padding:8px 12px; border-radius:8px; cursor:pointer; }
+
+
 .feature-card li:before {
   content: "✓ ";
   color: #28a745;
