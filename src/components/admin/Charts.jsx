@@ -19,14 +19,17 @@ const BarChart = ({ data = [], labelKey = 'name', valueKey = 'count', heightPer 
   }, [data, chartWidth, max, valueKey]);
 
   const wrapRef = useRef(null);
-  const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0, label: '', value: 0 });
+  const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0, label: '', value: 0, percent: 0 });
 
   const showTooltip = (ev, row) => {
     if (!wrapRef.current) return;
     const rect = wrapRef.current.getBoundingClientRect();
     const x = ev.clientX - rect.left + 8;
     const y = ev.clientY - rect.top + 8;
-    setTooltip({ visible: true, x, y, label: row[labelKey], value: row[valueKey] });
+    // compute percent of total
+    const total = data.reduce((s, it) => s + (it[valueKey] || 0), 0) || 1;
+    const percent = total > 0 ? Math.round(((row[valueKey] || 0) / total) * 1000) / 10 : 0;
+    setTooltip({ visible: true, x, y, label: row[labelKey], value: row[valueKey], percent });
   };
 
   const moveTooltip = (ev) => {
@@ -68,7 +71,7 @@ const BarChart = ({ data = [], labelKey = 'name', valueKey = 'count', heightPer 
       {tooltip.visible && (
         <div className="chart-tooltip" style={{ left: tooltip.x, top: tooltip.y }} role="note">
           <div className="chart-tooltip-label">{tooltip.label}</div>
-          <div className="chart-tooltip-value">{tooltip.value}</div>
+          <div className="chart-tooltip-value">{tooltip.value} responses • {tooltip.percent}%</div>
         </div>
       )}
     </div>

@@ -525,6 +525,11 @@ input, select, textarea {
 .chart-tooltip .chart-tooltip-label { font-weight:700; margin-bottom:4px; }
 .chart-tooltip .chart-tooltip-value { font-size: 13px; opacity: 0.95; }
 
+.btn-small { padding: 0.35rem 0.6rem; font-size: 0.85rem; border-radius: 8px; }
+.bar-chart-wrap { background: transparent; }
+.sparkline { display:block; }
+.sparkline-empty { opacity: 0.4; }
+
 
 /* Admin Responses styles */
 .admin-responses .dashboard-header { margin-bottom: 1rem; }

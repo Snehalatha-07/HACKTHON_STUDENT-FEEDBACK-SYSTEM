@@ -2,12 +2,69 @@ import React, { useState } from 'react';
 import { useFeedback } from '../../context/FeedbackContext';
 import { dataUtils } from '../../utils/data';
 import BarChart from './Charts';
+import Sparkline from './Sparkline';
 import { useNavigate } from 'react-router-dom';
 
 const AdminAnalytics = () => {
   const { feedbackForms, feedbackResponses, courses, instructors } = useFeedback();
   const navigate = useNavigate();
   const [selectedForm, setSelectedForm] = useState(null);
+
+  // Helper: download the first matching SVG by className as .svg file
+  const downloadSvg = (className, filename = 'chart.svg') => {
+    try {
+      const svg = document.querySelector(`.${className}`);
+      if (!svg) return alert('Chart not found');
+      const serializer = new XMLSerializer();
+      const source = serializer.serializeToString(svg);
+      const blob = new Blob([source], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      console.error(e);
+      alert('Failed to download SVG');
+    }
+  };
+
+  // Helper: convert SVG to PNG and download
+  const downloadPng = (className, filename = 'chart.png') => {
+    try {
+      const svg = document.querySelector(`.${className}`);
+      if (!svg) return alert('Chart not found');
+      const serializer = new XMLSerializer();
+      const source = serializer.serializeToString(svg);
+      const svgBlob = new Blob([source], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(svgBlob);
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.drawImage(img, 0, 0);
+        canvas.toBlob((blob) => {
+          const u = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = u;
+          a.download = filename;
+          a.click();
+          URL.revokeObjectURL(u);
+        }, 'image/png');
+        URL.revokeObjectURL(url);
+      };
+      img.onerror = (err) => { URL.revokeObjectURL(url); alert('SVG rendering failed'); };
+      img.src = url;
+    } catch (e) {
+      console.error(e);
+      alert('Failed to download PNG');
+    }
+  };
 
   const getFormResponses = (formId) => {
     return feedbackResponses.filter(response => response.formId === formId);
@@ -202,10 +259,16 @@ const AdminAnalytics = () => {
 
               return (
                 <div>
-                  <BarChart data={rows} labelKey="name" valueKey="count" onBarClick={(row) => {
-                    // navigate to admin responses filtered by course
-                    navigate(`/admin/responses?course=${encodeURIComponent(row.id)}`);
-                  }} />
+                  <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 8 }}>
+                    <BarChart data={rows} labelKey="name" valueKey="count" onBarClick={(row) => {
+                      // navigate to admin responses filtered by course
+                      navigate(`/admin/responses?course=${encodeURIComponent(row.id)}`);
+                    }} />
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                      <button className="btn btn-small" onClick={() => downloadSvg('bar-chart', 'responses_by_course.svg')}>Download SVG</button>
+                      <button className="btn btn-small" onClick={() => downloadPng('bar-chart', 'responses_by_course.png')}>Download PNG</button>
+                    </div>
+                  </div>
                 </div>
               );
             })()
@@ -259,20 +322,45 @@ const AdminAnalytics = () => {
                   {responses.length > 0 && (
                     <div className="form-quick-stats">
                       <h5>Quick Overview:</h5>
-                      {form.questions.slice(0, 2).map(question => {
-                        const questionSummary = summary.questionSummaries[question.id];
-                        if (question.type === 'rating' && questionSummary.averageRating !== undefined) {
-                          return (
-                            <div key={question.id} className="quick-stat">
-                              <span className="stat-question">{question.question.substring(0, 50)}...</span>
-                              <span className="stat-rating">
-                                {questionSummary.averageRating.toFixed(1)}/5 ⭐
-                              </span>
-                            </div>
-                          );
-                        }
-                        return null;
-                      })}
+                      <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+                        <div style={{ flex: 1 }}>
+                          {form.questions.slice(0, 2).map(question => {
+                            const questionSummary = summary.questionSummaries[question.id];
+                            if (question.type === 'rating' && questionSummary.averageRating !== undefined) {
+                              return (
+                                <div key={question.id} className="quick-stat">
+                                  <span className="stat-question">{question.question.substring(0, 50)}...</span>
+                                  <span className="stat-rating">
+                                    {questionSummary.averageRating.toFixed(1)}/5 ⭐
+                                  </span>
+                                </div>
+                              );
+                            }
+                            return null;
+                          })}
+                        </div>
+                        <div style={{ width: 140 }}>
+                          <Sparkline values={(() => {
+                            // build last-14-days counts for this form
+                            const days = 14;
+                            const now = new Date();
+                            const arr = new Array(days).fill(0);
+                            const dates = [];
+                            for (let i = days - 1; i >= 0; i--) {
+                              const d = new Date(now);
+                              d.setDate(now.getDate() - i);
+                              dates.push(d.toISOString().slice(0,10));
+                            }
+                            responses.forEach(r => {
+                              const day = r.submittedAt ? r.submittedAt.slice(0,10) : null;
+                              if (!day) return;
+                              const idx = dates.indexOf(day);
+                              if (idx >= 0) arr[idx]++;
+                            });
+                            return arr;
+                          })()} />
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>
