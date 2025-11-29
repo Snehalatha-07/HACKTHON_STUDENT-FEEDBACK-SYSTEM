@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useFeedback } from '../../context/FeedbackContext';
 import { dataUtils } from '../../utils/data';
+import BarChart from './Charts';
 
 const AdminAnalytics = () => {
   const { feedbackForms, feedbackResponses, courses, instructors } = useFeedback();
@@ -196,19 +197,10 @@ const AdminAnalytics = () => {
               });
 
               const rows = courses.map(c => ({ id: c.id, name: c.name, count: counts[c.id] || 0 }));
-              const max = Math.max(...rows.map(r => r.count), 1);
 
               return (
-                <div className="courses-chart-list">
-                  {rows.map(row => (
-                    <div key={row.id} className="courses-chart-row">
-                      <div className="course-name">{row.name}</div>
-                      <div className="course-bar">
-                        <div className="bar-fill" style={{ width: `${(row.count / max) * 100}%` }} />
-                        <div className="bar-count">{row.count}</div>
-                      </div>
-                    </div>
-                  ))}
+                <div>
+                  <BarChart data={rows} labelKey="name" valueKey="count" />
                 </div>
               );
             })()

@@ -507,6 +507,15 @@ input, select, textarea {
 .courses-chart-row .course-bar .bar-fill { position:absolute; left:0; top:0; bottom:0; background: linear-gradient(90deg,var(--primary),var(--primary-2)); width:0%; transition: width 400ms ease; }
 .courses-chart-row .course-bar .bar-count { position:absolute; right:8px; top:0; bottom:0; display:flex; align-items:center; color:white; font-weight:700; padding-right:6px; text-shadow: 0 1px 0 rgba(0,0,0,0.2); }
 
+/* SVG bar chart styles */
+.bar-chart { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+.bar-chart .bar-label { font-size: 12px; fill: var(--text); }
+.bar-chart .bar-value { font-size: 12px; fill: var(--muted); }
+.bar-chart .bar-fill-svg { fill: url(#barGradient); }
+
+/* fallback: style rects when gradient id isn't present */
+.bar-chart .bar-fill-svg { fill: linear-gradient(90deg, var(--primary), var(--primary-2)); }
+
 
 /* Admin Responses styles */
 .admin-responses .dashboard-header { margin-bottom: 1rem; }
