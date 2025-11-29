@@ -369,6 +369,57 @@ const AdminAnalytics = () => {
           </button>
         </div>
       )}
+      {/* Manual seed button (visible to admins) */}
+      <div style={{ marginBottom: 12 }}>
+        <button
+          className="btn btn-small"
+          onClick={() => {
+            if (!confirm('Seed demo responses now? This will add sample responses to local storage. Proceed?')) return;
+            const sampleTexts = [
+              'Great course, learned a lot.',
+              'Could use more practical examples.',
+              'Instructor was very helpful.',
+              'Too fast-paced for beginners.',
+              'Loved the assignments.'
+            ];
+            let created = 0;
+            feedbackForms.forEach(form => {
+              for (let i = 0; i < 4; i++) {
+                const answers = {};
+                form.questions.forEach(q => {
+                  if (q.type === 'rating') {
+                    const min = q.scale?.min || 1;
+                    const max = q.scale?.max || 5;
+                    answers[q.id] = Math.floor(Math.random() * (max - min + 1)) + min;
+                  } else if (q.type === 'yes_no') {
+                    answers[q.id] = Math.random() > 0.5 ? 'Yes' : 'No';
+                  } else if (q.type === 'multiple_choice') {
+                    if (Array.isArray(q.options) && q.options.length) {
+                      answers[q.id] = q.options[Math.floor(Math.random() * q.options.length)];
+                    }
+                  } else if (q.type === 'text') {
+                    answers[q.id] = Math.random() > 0.5 ? sampleTexts[Math.floor(Math.random() * sampleTexts.length)] : '';
+                  }
+                });
+
+                const courseId = form.targetType === 'course' ? form.targetId : (courses.length ? courses[Math.floor(Math.random() * courses.length)].id : null);
+
+                submitFeedbackResponse({
+                  formId: form.id,
+                  courseId,
+                  answers,
+                  anonymous: Math.random() > 0.3,
+                  studentId: `manual_seed_${Math.floor(Math.random() * 100000)}`
+                });
+                created += 1;
+              }
+            });
+            alert(`Seeded ${created} demo responses.`);
+          }}
+        >
+          Seed demo responses (manual)
+        </button>
+      </div>
 
       <div className="analytics-overview">
         <div className="overview-cards">
