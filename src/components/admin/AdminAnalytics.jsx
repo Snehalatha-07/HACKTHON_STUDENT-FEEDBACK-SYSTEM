@@ -182,6 +182,40 @@ const AdminAnalytics = () => {
         </div>
       </div>
 
+      {/* Courses responses chart */}
+      <div className="analytics-section">
+        <h3>Responses by Course</h3>
+        <div className="courses-chart">
+          {courses.length === 0 ? (
+            <div className="empty-state">No courses available</div>
+          ) : (
+            (() => {
+              const counts = {};
+              feedbackResponses.forEach(r => {
+                counts[r.courseId] = (counts[r.courseId] || 0) + 1;
+              });
+
+              const rows = courses.map(c => ({ id: c.id, name: c.name, count: counts[c.id] || 0 }));
+              const max = Math.max(...rows.map(r => r.count), 1);
+
+              return (
+                <div className="courses-chart-list">
+                  {rows.map(row => (
+                    <div key={row.id} className="courses-chart-row">
+                      <div className="course-name">{row.name}</div>
+                      <div className="course-bar">
+                        <div className="bar-fill" style={{ width: `${(row.count / max) * 100}%` }} />
+                        <div className="bar-count">{row.count}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              );
+            })()
+          )}
+        </div>
+      </div>
+
       <div className="forms-analytics">
         <h3>Form Analytics</h3>
         

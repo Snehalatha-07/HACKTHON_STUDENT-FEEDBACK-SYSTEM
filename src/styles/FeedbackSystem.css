@@ -498,6 +498,16 @@ input, select, textarea {
   color: #666;
 }
 
+/* Courses chart in analytics */
+.courses-chart { background: var(--card-bg); padding: 1rem; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.04); margin-top: 12px; }
+.courses-chart-list { display:flex; flex-direction:column; gap:10px; }
+.courses-chart-row { display:flex; gap:12px; align-items:center; }
+.courses-chart-row .course-name { width: 220px; font-weight:600; color:var(--text); }
+.courses-chart-row .course-bar { flex: 1; position:relative; height: 28px; background: #f1f5f9; border-radius: 6px; overflow:hidden; }
+.courses-chart-row .course-bar .bar-fill { position:absolute; left:0; top:0; bottom:0; background: linear-gradient(90deg,var(--primary),var(--primary-2)); width:0%; transition: width 400ms ease; }
+.courses-chart-row .course-bar .bar-count { position:absolute; right:8px; top:0; bottom:0; display:flex; align-items:center; color:white; font-weight:700; padding-right:6px; text-shadow: 0 1px 0 rgba(0,0,0,0.2); }
+
+
 /* Admin Responses styles */
 .admin-responses .dashboard-header { margin-bottom: 1rem; }
 .admin-responses .filters-row { display:flex; gap:12px; align-items:center; margin-bottom:12px; }
