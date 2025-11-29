@@ -646,6 +646,14 @@ input, select, textarea {
 .form-row-inline { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
 .inline-label { display:flex; align-items:center; gap:0.5rem; }
 
+/* Course stats */
+.course-stats { margin-bottom:1rem; }
+.stats-grid { display:flex; gap:1rem; flex-wrap:wrap; }
+.stat-card { background:white; padding:0.8rem 1rem; border-radius:10px; box-shadow:0 8px 20px rgba(2,6,23,0.04); min-width:160px; }
+.stat-title { font-weight:600; color:#374151; margin-bottom:0.25rem; }
+.stat-value { font-size:1.25rem; font-weight:700; color:#0f172a; }
+.stat-count { color:#6b7280; font-size:0.9rem; }
+
 /* Entrance animations */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(12px); }

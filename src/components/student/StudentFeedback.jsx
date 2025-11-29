@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { useFeedback } from '../../context/FeedbackContext';
 import { questionTypes } from '../../utils/data';
+import Toast from '../Toast';
 
 // Inline quick feedback form (keeps file self-contained)
 const QuickFeedbackForm = ({ courses = [], onSubmit }) => {
-  const [courseId, setCourseId] = useState(courses[0] ? courses[0].id : '');
+  const [courseId, setCourseId] = useState('');
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState('');
   const [anonymous, setAnonymous] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!courseId) return alert('Please select a course');
-    if (!rating) return alert('Please provide a rating');
+    if (!courseId) return; // button is disabled anyway
     onSubmit({ courseId, rating, comment, anonymous });
     setComment('');
     setRating(5);
@@ -45,7 +45,7 @@ const QuickFeedbackForm = ({ courses = [], onSubmit }) => {
 
       <div className="form-row form-row-inline">
         <label className="inline-label"><input type="checkbox" checked={anonymous} onChange={e => setAnonymous(e.target.checked)} /> Submit anonymously</label>
-        <button type="submit" className="btn btn-primary">Submit</button>
+        <button type="submit" className="btn btn-primary" disabled={!courseId}>Submit</button>
       </div>
     </form>
   );
@@ -56,6 +56,7 @@ const StudentFeedback = () => {
   const [selectedForm, setSelectedForm] = useState(null);
   const [formResponses, setFormResponses] = useState({});
   const [submitting, setSubmitting] = useState(false);
+  const [toast, setToast] = useState(null);
 
   const activeForms = feedbackForms.filter(form => form.isActive);
 
@@ -89,11 +90,11 @@ const StudentFeedback = () => {
       };
 
       submitFeedbackResponse(responseData);
-      alert('Thank you! Your feedback has been submitted successfully.');
+      setToast('Thank you! Your feedback has been submitted successfully.');
       setSelectedForm(null);
       setFormResponses({});
     } catch (error) {
-      alert('Error submitting feedback. Please try again.');
+      setToast('Error submitting feedback. Please try again.');
       console.error('Submission error:', error);
     } finally {
       setSubmitting(false);
@@ -250,6 +251,20 @@ const StudentFeedback = () => {
     );
   }
 
+  // aggregated stats: average rating per course from feedbackResponses
+  const computeCourseStats = () => {
+    const stats = {};
+    feedbackResponses.forEach(r => {
+      if (!r.courseId || typeof r.rating === 'undefined') return;
+      if (!stats[r.courseId]) stats[r.courseId] = { total: 0, count: 0 };
+      stats[r.courseId].total += Number(r.rating) || 0;
+      stats[r.courseId].count += 1;
+    });
+    return Object.keys(stats).map(cid => ({ courseId: cid, avg: stats[cid].total / stats[cid].count, count: stats[cid].count }));
+  };
+
+  const stats = computeCourseStats();
+
   return (
     <div className="student-feedback">
       <div className="page-header">
@@ -283,6 +298,25 @@ const StudentFeedback = () => {
           <p>There are currently no active feedback forms. Please check back later.</p>
         </div>
       ) : (
+        <>
+        <div className="course-stats">
+          <h3>Recent Ratings</h3>
+          {stats.length === 0 ? <p className="muted">No ratings yet</p> : (
+            <div className="stats-grid">
+              {stats.map(s => {
+                const course = courses.find(c => c.id === s.courseId) || { name: 'Unknown' };
+                return (
+                  <div key={s.courseId} className="stat-card">
+                    <div className="stat-title">{course.name}</div>
+                    <div className="stat-value">{s.avg.toFixed(1)} / 5</div>
+                    <div className="stat-count">{s.count} response{s.count !== 1 ? 's' : ''}</div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
         <div className="forms-grid">
           {activeForms.map(form => {
             const targetInfo = form.targetType === 'course' 
