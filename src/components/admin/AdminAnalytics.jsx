@@ -4,6 +4,29 @@ import { dataUtils } from '../../utils/data';
 import BarChart from './Charts';
 import Sparkline from './Sparkline';
 import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+
+// Simple palette selector component
+const PaletteSelector = ({ onChange }) => {
+  const palettes = [
+    ['#06b6d4', '#0ea5a4', '#34d399', '#60a5fa', '#f59e0b'],
+    ['#7c3aed', '#06b6d4', '#ef4444', '#f97316', '#10b981'],
+    ['#ef4444', '#f97316', '#f59e0b', '#10b981', '#3b82f6']
+  ];
+  const [idx, setIdx] = useState(0);
+  const select = (i) => { setIdx(i); onChange && onChange(palettes[i]); };
+  return (
+    <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+      {palettes.map((p, i) => (
+        <button key={i} className={`btn ${i === idx ? 'btn-primary' : 'btn-ghost'}`} onClick={() => select(i)} style={{ padding: 6 }}>
+          <span style={{ display: 'inline-flex', gap: 6 }}>
+            {p.slice(0,3).map((c, j) => <span key={j} style={{ width:14, height:14, background:c, display:'inline-block', borderRadius:3 }} />)}
+          </span>
+        </button>
+      ))}
+    </div>
+  );
+};
 
 const AdminAnalytics = () => {
   const { feedbackForms, feedbackResponses, courses, instructors, submitFeedbackResponse } = useFeedback();
@@ -311,7 +334,6 @@ const AdminAnalytics = () => {
       <div className="page-header">
         <h2>Feedback Analytics</h2>
       </div>
-
       {/* Dev: seed demo responses when running locally */}
       {window && window.location && window.location.hostname === 'localhost' && (
         <div style={{ marginBottom: 12 }}>
@@ -447,29 +469,33 @@ const AdminAnalytics = () => {
           {courses.length === 0 ? (
             <div className="empty-state">No courses available</div>
           ) : (
-            (() => {
-              const counts = {};
-              feedbackResponses.forEach(r => {
-                counts[r.courseId] = (counts[r.courseId] || 0) + 1;
-              });
+                (() => {
+                  const counts = {};
+                  feedbackResponses.forEach(r => {
+                    counts[r.courseId] = (counts[r.courseId] || 0) + 1;
+                  });
 
-              const rows = courses.map(c => ({ id: c.id, name: c.name, count: counts[c.id] || 0 }));
+                  const rows = courses.map(c => ({ id: c.id, name: c.name, count: counts[c.id] || 0 }));
 
-              return (
-                <div>
-                  <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 8 }}>
-                    <BarChart data={rows} labelKey="name" valueKey="count" onBarClick={(row) => {
-                      // navigate to admin responses filtered by course
-                      navigate(`/admin/responses?course=${encodeURIComponent(row.id)}`);
-                    }} />
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                      <button className="btn btn-small" onClick={() => downloadSvg('bar-chart', 'responses_by_course.svg')}>Download SVG</button>
-                      <button className="btn btn-small" onClick={() => downloadPng('bar-chart', 'responses_by_course.png')}>Download PNG</button>
+                  return (
+                    <div>
+                      <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 8 }}>
+                        <div style={{ flex: 1 }}>
+                          <label style={{ display: 'block', marginBottom: 6 }}>Palette:</label>
+                          <PaletteSelector onChange={(p) => setSelectedPalette(p)} />
+                        </div>
+                        <BarChart data={rows} labelKey="name" valueKey="count" palette={selectedPalette} onBarClick={(row) => {
+                          // navigate to admin responses filtered by course
+                          navigate(`/admin/responses?course=${encodeURIComponent(row.id)}`);
+                        }} />
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                          <button className="btn btn-small" onClick={() => downloadSvg('bar-chart', 'responses_by_course.svg')}>Download SVG</button>
+                          <button className="btn btn-small" onClick={() => downloadPng('bar-chart', 'responses_by_course.png')}>Download PNG</button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              );
-            })()
+                  );
+                })()
           )}
         </div>
       </div>
