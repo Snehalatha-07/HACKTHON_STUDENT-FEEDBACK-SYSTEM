@@ -10,6 +10,67 @@ const AdminAnalytics = () => {
   const navigate = useNavigate();
   const [selectedForm, setSelectedForm] = useState(null);
 
+  // Auto-seed demo responses once in dev when there are no responses yet
+  React.useEffect(() => {
+    try {
+      if (typeof window === 'undefined') return;
+      if (window.location.hostname !== 'localhost') return;
+      const already = localStorage.getItem('seededResponsesV1');
+      if (already) return;
+      if (feedbackResponses && feedbackResponses.length > 0) return;
+
+      // seed small dataset silently
+      const sampleTexts = [
+        'Great course, learned a lot.',
+        'Could use more practical examples.',
+        'Instructor was very helpful.',
+        'Too fast-paced for beginners.',
+        'Loved the assignments.'
+      ];
+
+      let created = 0;
+      feedbackForms.forEach(form => {
+        for (let i = 0; i < 2; i++) {
+          const answers = {};
+          form.questions.forEach(q => {
+            if (q.type === 'rating') {
+              const min = q.scale?.min || 1;
+              const max = q.scale?.max || 5;
+              answers[q.id] = Math.floor(Math.random() * (max - min + 1)) + min;
+            } else if (q.type === 'yes_no') {
+              answers[q.id] = Math.random() > 0.5 ? 'Yes' : 'No';
+            } else if (q.type === 'multiple_choice') {
+              if (Array.isArray(q.options) && q.options.length) {
+                answers[q.id] = q.options[Math.floor(Math.random() * q.options.length)];
+              }
+            } else if (q.type === 'text') {
+              answers[q.id] = Math.random() > 0.5 ? sampleTexts[Math.floor(Math.random() * sampleTexts.length)] : '';
+            }
+          });
+
+          const courseId = form.targetType === 'course' ? form.targetId : (courses.length ? courses[Math.floor(Math.random() * courses.length)].id : null);
+
+          submitFeedbackResponse({
+            formId: form.id,
+            courseId,
+            answers,
+            anonymous: Math.random() > 0.2,
+            studentId: `seed_${Math.floor(Math.random() * 10000)}`
+          });
+          created += 1;
+        }
+      });
+
+      localStorage.setItem('seededResponsesV1', String(created));
+    } catch (e) {
+      // ignore errors during dev seeding
+      // eslint-disable-next-line no-console
+      console.error('Dev seeding failed', e);
+    }
+    // only run when component mounts or forms/responses change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [feedbackForms]);
+
   // Helper: download the first matching SVG by className as .svg file
   const downloadSvg = (className, filename = 'chart.svg') => {
     try {
