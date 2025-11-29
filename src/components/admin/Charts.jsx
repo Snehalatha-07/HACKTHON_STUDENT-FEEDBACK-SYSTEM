@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 // Animated horizontal SVG bar chart. Supports onBarClick(row) to allow interaction.
 const BarChart = ({ data = [], labelKey = 'name', valueKey = 'count', heightPer = 34, labelWidth = 180, onBarClick }) => {
@@ -18,8 +18,29 @@ const BarChart = ({ data = [], labelKey = 'name', valueKey = 'count', heightPer 
     return () => clearTimeout(t);
   }, [data, chartWidth, max, valueKey]);
 
+  const wrapRef = useRef(null);
+  const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0, label: '', value: 0 });
+
+  const showTooltip = (ev, row) => {
+    if (!wrapRef.current) return;
+    const rect = wrapRef.current.getBoundingClientRect();
+    const x = ev.clientX - rect.left + 8;
+    const y = ev.clientY - rect.top + 8;
+    setTooltip({ visible: true, x, y, label: row[labelKey], value: row[valueKey] });
+  };
+
+  const moveTooltip = (ev) => {
+    if (!wrapRef.current) return;
+    const rect = wrapRef.current.getBoundingClientRect();
+    const x = ev.clientX - rect.left + 8;
+    const y = ev.clientY - rect.top + 8;
+    setTooltip(t => ({ ...t, x, y }));
+  };
+
+  const hideTooltip = () => setTooltip({ visible: false, x: 0, y: 0, label: '', value: 0 });
+
   return (
-    <div className="bar-chart-wrap" style={{ width: '100%', overflow: 'auto' }}>
+    <div ref={wrapRef} className="bar-chart-wrap" style={{ width: '100%', overflow: 'auto', position: 'relative' }}>
       <svg className="bar-chart" viewBox={`0 0 ${viewWidth} ${height}`} width="100%" height={height} role="img" aria-label="Bar chart">
         <defs>
           <linearGradient id="barGradient" x1="0" x2="1">
@@ -34,7 +55,7 @@ const BarChart = ({ data = [], labelKey = 'name', valueKey = 'count', heightPer 
           const label = d[labelKey] || '';
 
           return (
-            <g key={i} transform={`translate(0, ${y})`} style={{ cursor: onBarClick ? 'pointer' : 'default' }} onClick={() => onBarClick && onBarClick(d)} onKeyDown={() => onBarClick && onBarClick(d)} tabIndex={onBarClick ? 0 : -1} aria-label={`${label}: ${value}`}>
+            <g key={i} transform={`translate(0, ${y})`} style={{ cursor: onBarClick ? 'pointer' : 'default' }} onClick={() => onBarClick && onBarClick(d)} onKeyDown={() => onBarClick && onBarClick(d)} tabIndex={onBarClick ? 0 : -1} aria-label={`${label}: ${value}`} onMouseEnter={(e) => showTooltip(e, d)} onMouseMove={moveTooltip} onMouseLeave={hideTooltip}>
               <text x={10} y={heightPer / 2} alignmentBaseline="middle" className="bar-label">{label}</text>
               <rect x={labelWidth} y={6} rx={6} ry={6} width={chartWidth} height={heightPer - 12} fill="#f1f5f9" />
               <rect x={labelWidth} y={6} rx={6} ry={6} width={barW} height={heightPer - 12} className="bar-fill-svg" fill="url(#barGradient)" />
@@ -43,6 +64,13 @@ const BarChart = ({ data = [], labelKey = 'name', valueKey = 'count', heightPer 
           );
         })}
       </svg>
+
+      {tooltip.visible && (
+        <div className="chart-tooltip" style={{ left: tooltip.x, top: tooltip.y }} role="note">
+          <div className="chart-tooltip-label">{tooltip.label}</div>
+          <div className="chart-tooltip-value">{tooltip.value}</div>
+        </div>
+      )}
     </div>
   );
 };

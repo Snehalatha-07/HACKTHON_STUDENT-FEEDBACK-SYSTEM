@@ -520,6 +520,11 @@ input, select, textarea {
 .bar-chart g:hover .bar-fill-svg { opacity: 0.95; transform: scaleY(1.01); }
 .bar-chart g:focus { outline: 2px solid rgba(14,165,164,0.12); }
 
+/* Tooltip */
+.chart-tooltip { position: absolute; pointer-events: none; background: rgba(15,23,42,0.95); color: white; padding: 8px 10px; border-radius: 6px; font-size: 13px; box-shadow: 0 6px 18px rgba(2,6,23,0.18); transform: translate(-6px, -8px); z-index: 2000; white-space: nowrap; }
+.chart-tooltip .chart-tooltip-label { font-weight:700; margin-bottom:4px; }
+.chart-tooltip .chart-tooltip-value { font-size: 13px; opacity: 0.95; }
+
 
 /* Admin Responses styles */
 .admin-responses .dashboard-header { margin-bottom: 1rem; }

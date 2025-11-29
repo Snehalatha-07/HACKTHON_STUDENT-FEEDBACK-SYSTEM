@@ -9,6 +9,18 @@ const AdminResponses = () => {
   const [filterCourse, setFilterCourse] = useState('');
   const [filterForm, setFilterForm] = useState('');
   const location = window.location;
+  const updateUrlParams = (course, form) => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (course) params.set('course', course); else params.delete('course');
+      if (form) params.set('form', form); else params.delete('form');
+      const qs = params.toString();
+      const newUrl = window.location.pathname + (qs ? `?${qs}` : '');
+      window.history.replaceState({}, '', newUrl);
+    } catch (e) {
+      // ignore
+    }
+  };
 
   // Apply URL query filter if present on initial load (e.g. /admin/responses?course=123)
   React.useEffect(() => {
@@ -136,7 +148,7 @@ const AdminResponses = () => {
       <div className="filters-row">
         <label>
           Course:
-          <select value={filterCourse} onChange={e => { setFilterCourse(e.target.value); setPage(1); }}>
+          <select value={filterCourse} onChange={e => { setFilterCourse(e.target.value); setPage(1); updateUrlParams(e.target.value, filterForm); }}>
             <option value="">All courses</option>
             {courses.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
@@ -144,7 +156,7 @@ const AdminResponses = () => {
 
         <label>
           Form:
-          <select value={filterForm} onChange={e => { setFilterForm(e.target.value); setPage(1); }}>
+          <select value={filterForm} onChange={e => { setFilterForm(e.target.value); setPage(1); updateUrlParams(filterCourse, e.target.value); }}>
             <option value="">All forms</option>
             {feedbackForms.map(f => <option key={f.id} value={f.id}>{f.title}</option>)}
           </select>
@@ -160,6 +172,7 @@ const AdminResponses = () => {
         </label>
 
         <div style={{ display: 'flex', gap: 8, marginLeft: 'auto', alignItems: 'center' }}>
+          <button className="btn btn-outline" onClick={() => { clearFilters(); updateUrlParams('', ''); }}>Reset Filters</button>
           <button className="btn btn-outline" onClick={clearFilters}>Clear</button>
           <button className="btn btn-primary" onClick={exportCsv} disabled={processed.length === 0}>Export CSV</button>
         </div>
