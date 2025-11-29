@@ -6,26 +6,30 @@ import HeroIllustration from './HeroIllustration';
 const Home = () => {
   const { user } = useFeedback();
 
-  // If user is logged in, show a compact dashboard header
   if (user) {
     return (
       <div className="home-container">
-        <section className="intro-hero intro-hero-logged">
-          <div className="intro-content">
-            <h1>Welcome back, {user.name || 'User'} 👋</h1>
-            <p className="intro-sub">Quick access to your feedback and analytics.</p>
-            <div className="intro-buttons">
-              {user.role === 'admin' ? (
-                <>
-                  <Link to="/admin/forms" className="btn btn-primary">Manage Forms</Link>
-                  <Link to="/admin/analytics" className="btn btn-outline">Analytics</Link>
-                </>
-              ) : (
-                <>
-                  <Link to="/student/feedback" className="btn btn-primary">Give Feedback</Link>
-                  <Link to="/student/results" className="btn btn-outline">View Results</Link>
-                </>
-              )}
+        <section className="playful-hero playful-hero-logged">
+          <div className="playful-inner">
+            <div className="playful-left">
+              <h1>Welcome back, {user.name || 'Friend'} ✨</h1>
+              <p className="muted">Jump right into your dashboard or create a new form.</p>
+              <div className="intro-buttons">
+                {user.role === 'admin' ? (
+                  <>
+                    <Link to="/admin/forms" className="btn btn-primary">Create Form</Link>
+                    <Link to="/admin/analytics" className="btn btn-outline">View Analytics</Link>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/student/feedback" className="btn btn-primary">Give Feedback</Link>
+                    <Link to="/student/results" className="btn btn-outline">See Results</Link>
+                  </>
+                )}
+              </div>
+            </div>
+            <div className="playful-right">
+              <HeroIllustration />
             </div>
           </div>
         </section>
@@ -33,31 +37,33 @@ const Home = () => {
     );
   }
 
-  // Public landing page
   return (
     <div className="home-container">
-      <section className="intro-hero">
-        <div className="intro-inner">
-          <div className="intro-content">
-            <h1 className="intro-title">Student Feedback System</h1>
-            <p className="intro-sub">
-              Empowering students and educators with clear, actionable feedback —
-              beautifully visualized and easy to manage.
-            </p>
+      <section className="playful-hero">
+        <div className="blobs">
+          <span className="blob b1" />
+          <span className="blob b2" />
+          <span className="blob b3" />
+        </div>
 
-            <div className="intro-buttons">
-              <Link to="/login" className="btn btn-primary">Get Started</Link>
-              <Link to="/reg" className="btn btn-outline">Sign Up</Link>
+        <div className="playful-inner">
+          <div className="playful-left">
+            <h1 className="playful-title">Make feedback fun. Make it matter.</h1>
+            <p className="playful-sub">Collect honest student feedback with delightful forms, beautiful analytics, and anonymity when needed.</p>
+
+            <div className="playful-ctas">
+              <Link to="/reg" className="btn btn-primary large">Sign Up — It's free</Link>
+              <Link to="/login" className="btn btn-outline large">Try Demo</Link>
             </div>
 
-            <ul className="intro-features">
-              <li>Simple feedback forms</li>
-              <li>Anonymous responses</li>
-              <li>Real-time analytics</li>
-            </ul>
+            <div className="feature-tiles">
+              <div className="tile">🎯 Easy forms</div>
+              <div className="tile">🔒 Anonymous</div>
+              <div className="tile">📈 Live analytics</div>
+            </div>
           </div>
 
-          <div className="intro-art">
+          <div className="playful-right">
             <HeroIllustration />
           </div>
         </div>

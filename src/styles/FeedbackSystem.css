@@ -562,6 +562,56 @@ input, select, textarea {
   .intro-title { font-size: 2rem; }
 }
 
+/* Playful hero styles */
+.playful-hero {
+  position: relative;
+  overflow: visible;
+  padding: 4rem 1.25rem;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(99,102,241,0.06), rgba(6,182,212,0.03));
+}
+.playful-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 2rem;
+  align-items: center;
+}
+.playful-left h1, .playful-title {
+  font-size: 2.6rem;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.05;
+  background: linear-gradient(90deg, #7c3aed, #06b6d4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.playful-sub { color:#475569; margin-bottom:1rem; font-size:1.125rem; }
+.playful-ctas { display:flex; gap:0.75rem; margin:1rem 0; }
+.btn.large { padding:0.9rem 1.4rem; border-radius:12px; }
+.feature-tiles { display:flex; gap:0.6rem; margin-top:1rem; }
+.feature-tiles .tile { background: white; padding:0.5rem 0.8rem; border-radius:10px; box-shadow:0 8px 22px rgba(2,6,23,0.06); font-weight:600; }
+
+/* Animated decorative blobs */
+.blobs { position:absolute; inset:0; pointer-events:none; }
+.blob { position:absolute; border-radius:999px; filter:blur(20px); opacity:0.9; transform:translateZ(0); }
+.blob.b1 { width:260px; height:160px; left:-30px; top:-40px; background:linear-gradient(90deg,#7c3aed,#06b6d4); animation: floaty 7s ease-in-out infinite; }
+.blob.b2 { width:160px; height:160px; right:30px; top:-60px; background:linear-gradient(90deg,#fb7185,#f97316); animation: floaty 9s ease-in-out infinite reverse; }
+.blob.b3 { width:180px; height:120px; left:40%; bottom:-40px; background:linear-gradient(90deg,#34d399,#60a5fa); animation: floaty 8s ease-in-out infinite; }
+@keyframes floaty { 0% { transform: translateY(0) } 50% { transform: translateY(-18px) } 100% { transform: translateY(0) } }
+
+/* Hero illustration subtle float */
+.playful-right .hero-illustration svg { transform: translateY(0); animation: floaty 6s ease-in-out infinite; }
+
+/* Logged in compact variant */
+.playful-hero-logged { padding: 2rem; }
+.playful-right { display:flex; align-items:center; justify-content:center; }
+
+@media (max-width:900px) {
+  .playful-inner { grid-template-columns: 1fr; }
+  .playful-right { margin-top:1.25rem; }
+  .playful-left h1 { font-size: 1.8rem; }
+}
+
 .dashboard-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
