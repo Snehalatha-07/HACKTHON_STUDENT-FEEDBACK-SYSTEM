@@ -6,7 +6,7 @@ import Sparkline from './Sparkline';
 import { useNavigate } from 'react-router-dom';
 
 const AdminAnalytics = () => {
-  const { feedbackForms, feedbackResponses, courses, instructors } = useFeedback();
+  const { feedbackForms, feedbackResponses, courses, instructors, submitFeedbackResponse } = useFeedback();
   const navigate = useNavigate();
   const [selectedForm, setSelectedForm] = useState(null);
 
@@ -222,6 +222,64 @@ const AdminAnalytics = () => {
       <div className="page-header">
         <h2>Feedback Analytics</h2>
       </div>
+
+      {/* Dev: seed demo responses when running locally */}
+      {window && window.location && window.location.hostname === 'localhost' && (
+        <div style={{ marginBottom: 12 }}>
+          <button
+            className="btn btn-outline"
+            onClick={() => {
+              // generate simple random responses for testing
+              const sampleTexts = [
+                'Great course, learned a lot.',
+                'Could use more practical examples.',
+                'Instructor was very helpful.',
+                'Too fast-paced for beginners.',
+                'Loved the assignments.'
+              ];
+
+              let created = 0;
+              feedbackForms.forEach(form => {
+                // create 3 responses per form
+                for (let i = 0; i < 3; i++) {
+                  const answers = {};
+                  form.questions.forEach(q => {
+                    if (q.type === 'rating') {
+                      const min = q.scale?.min || 1;
+                      const max = q.scale?.max || 5;
+                      answers[q.id] = Math.floor(Math.random() * (max - min + 1)) + min;
+                    } else if (q.type === 'yes_no') {
+                      answers[q.id] = Math.random() > 0.5 ? 'Yes' : 'No';
+                    } else if (q.type === 'multiple_choice') {
+                      if (Array.isArray(q.options) && q.options.length) {
+                        answers[q.id] = q.options[Math.floor(Math.random() * q.options.length)];
+                      }
+                    } else if (q.type === 'text') {
+                      answers[q.id] = Math.random() > 0.5 ? sampleTexts[Math.floor(Math.random() * sampleTexts.length)] : '';
+                    }
+                  });
+
+                  // assign a courseId where possible
+                  const courseId = form.targetType === 'course' ? form.targetId : (courses.length ? courses[Math.floor(Math.random() * courses.length)].id : null);
+
+                  submitFeedbackResponse({
+                    formId: form.id,
+                    courseId,
+                    answers,
+                    anonymous: Math.random() > 0.3,
+                    studentId: `seed_${Math.floor(Math.random() * 10000)}`
+                  });
+                  created += 1;
+                }
+              });
+
+              alert(`Seeded ${created} demo responses. Reloading analytics...`);
+            }}
+          >
+            Seed demo responses (dev only)
+          </button>
+        </div>
+      )}
 
       <div className="analytics-overview">
         <div className="overview-cards">
