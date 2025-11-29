@@ -11,7 +11,7 @@ const Home = () => {
       <div className="home-container">
         <section className="playful-hero playful-hero-logged">
           <div className="playful-inner">
-            <div className="playful-left">
+            <div className="playful-left animate-fade-up">
               <h1>Welcome back, {user.name || 'Friend'} ✨</h1>
               <p className="muted">Jump right into your dashboard or create a new form.</p>
               <div className="intro-buttons">
@@ -28,7 +28,7 @@ const Home = () => {
                 )}
               </div>
             </div>
-            <div className="playful-right">
+            <div className="playful-right animate-fade-up delay-1">
               <HeroIllustration />
             </div>
           </div>
@@ -47,23 +47,23 @@ const Home = () => {
         </div>
 
         <div className="playful-inner">
-          <div className="playful-left">
+          <div className="playful-left animate-fade-up">
             <h1 className="playful-title">Make feedback fun. Make it matter.</h1>
             <p className="playful-sub">Collect honest student feedback with delightful forms, beautiful analytics, and anonymity when needed.</p>
 
             <div className="playful-ctas">
-              <Link to="/reg" className="btn btn-primary large">Sign Up — It's free</Link>
-              <Link to="/login" className="btn btn-outline large">Try Demo</Link>
+              <Link to="/reg" className="btn btn-primary large animate-fade-up delay-1">Sign Up — It's free</Link>
+              <Link to="/login" className="btn btn-outline large animate-fade-up delay-1">Try Demo</Link>
             </div>
 
             <div className="feature-tiles">
-              <div className="tile">🎯 Easy forms</div>
-              <div className="tile">🔒 Anonymous</div>
-              <div className="tile">📈 Live analytics</div>
+              <div className="tile animate-fade-up">🎯 Easy forms</div>
+              <div className="tile animate-fade-up">🔒 Anonymous</div>
+              <div className="tile animate-fade-up">📈 Live analytics</div>
             </div>
           </div>
 
-          <div className="playful-right">
+          <div className="playful-right animate-fade-up delay-2">
             <HeroIllustration />
           </div>
         </div>
