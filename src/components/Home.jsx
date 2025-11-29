@@ -49,10 +49,10 @@ const Home = () => {
         <div className="playful-inner">
           <div className="playful-left animate-fade-up">
             <h1 className="playful-title">Make feedback fun. Make it matter.</h1>
-            <p className="playful-sub">Collect honest student feedback with delightful forms, beautiful analytics, and anonymity when needed.</p>
+            <p className="playful-sub">Collect actionable student feedback with intuitive forms, insightful analytics, and optional anonymity.</p>
 
             <div className="playful-ctas">
-              <Link to="/reg" className="btn btn-primary large animate-fade-up delay-1">Sign Up — It's free</Link>
+              <Link to="/reg" className="btn btn-primary large animate-fade-up delay-1">Get Started</Link>
               <Link to="/login" className="btn btn-outline large animate-fade-up delay-1">Try Demo</Link>
             </div>
 
