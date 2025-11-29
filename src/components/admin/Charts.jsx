@@ -14,7 +14,13 @@ const BarChart = ({ data = [], labelKey = 'name', valueKey = 'count', heightPer 
     setAnimatedWidths(new Array(data.length).fill(0));
     // animate to target widths in next tick
     const targets = data.map(d => (max > 0 ? ((d[valueKey] || 0) / max) * chartWidth : 0));
-    const t = setTimeout(() => setAnimatedWidths(targets), 20);
+    // gentle stagger for nicer animation
+    const t = setTimeout(() => {
+      // set widths with small stagger
+      targets.forEach((w, i) => {
+        setTimeout(() => setAnimatedWidths(prev => { const next = [...prev]; next[i] = w; return next; }), i * 80);
+      });
+    }, 30);
     return () => clearTimeout(t);
   }, [data, chartWidth, max, valueKey]);
 

@@ -245,12 +245,40 @@ const AdminAnalytics = () => {
                         </div>
                       </div>
                       {renderRatingChart(questionSummary.distribution, question.scale)}
+                      {/* Per-question bar chart for rating distribution */}
+                      <div className="question-barchart" style={{ marginTop: 12 }}>
+                        <h5 style={{ margin: '6px 0' }}>Distribution</h5>
+                        <BarChart
+                          data={(() => {
+                            const dist = questionSummary.distribution || {};
+                            const rows = [];
+                            for (let i = question.scale.min; i <= question.scale.max; i++) {
+                              const label = question.scale.labels[i - question.scale.min] || String(i);
+                              rows.push({ id: i, name: `${i} — ${label}`, count: dist[i] || 0 });
+                            }
+                            return rows;
+                          })()}
+                          labelKey="name"
+                          valueKey="count"
+                        />
+                      </div>
                     </div>
                   )}
 
                   {(question.type === 'multiple_choice' || question.type === 'yes_no') && questionSummary.distribution && (
                     <div className="distribution-results">
                       {renderDistributionChart(questionSummary.distribution)}
+                      <div className="question-barchart" style={{ marginTop: 12 }}>
+                        <h5 style={{ margin: '6px 0' }}>Distribution</h5>
+                        <BarChart
+                          data={(() => {
+                            const dist = questionSummary.distribution || {};
+                            return Object.entries(dist).map(([opt, cnt]) => ({ id: opt, name: String(opt), count: cnt }));
+                          })()}
+                          labelKey="name"
+                          valueKey="count"
+                        />
+                      </div>
                     </div>
                   )}
 
