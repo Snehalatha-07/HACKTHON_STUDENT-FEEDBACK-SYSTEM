@@ -514,7 +514,11 @@ input, select, textarea {
 .bar-chart .bar-fill-svg { fill: url(#barGradient); }
 
 /* fallback: style rects when gradient id isn't present */
-.bar-chart .bar-fill-svg { fill: linear-gradient(90deg, var(--primary), var(--primary-2)); }
+.bar-chart .bar-fill-svg { transition: width 600ms ease; }
+
+.bar-chart-wrap:focus { outline: none; }
+.bar-chart g:hover .bar-fill-svg { opacity: 0.95; transform: scaleY(1.01); }
+.bar-chart g:focus { outline: 2px solid rgba(14,165,164,0.12); }
 
 
 /* Admin Responses styles */

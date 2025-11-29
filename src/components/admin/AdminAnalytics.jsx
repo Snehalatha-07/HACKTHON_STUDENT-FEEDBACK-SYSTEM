@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { useFeedback } from '../../context/FeedbackContext';
 import { dataUtils } from '../../utils/data';
 import BarChart from './Charts';
+import { useNavigate } from 'react-router-dom';
 
 const AdminAnalytics = () => {
   const { feedbackForms, feedbackResponses, courses, instructors } = useFeedback();
+  const navigate = useNavigate();
   const [selectedForm, setSelectedForm] = useState(null);
 
   const getFormResponses = (formId) => {
@@ -200,7 +202,10 @@ const AdminAnalytics = () => {
 
               return (
                 <div>
-                  <BarChart data={rows} labelKey="name" valueKey="count" />
+                  <BarChart data={rows} labelKey="name" valueKey="count" onBarClick={(row) => {
+                    // navigate to admin responses filtered by course
+                    navigate(`/admin/responses?course=${encodeURIComponent(row.id)}`);
+                  }} />
                 </div>
               );
             })()

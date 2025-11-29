@@ -8,6 +8,21 @@ const AdminResponses = () => {
   // Filters and UI state
   const [filterCourse, setFilterCourse] = useState('');
   const [filterForm, setFilterForm] = useState('');
+  const location = window.location;
+
+  // Apply URL query filter if present on initial load (e.g. /admin/responses?course=123)
+  React.useEffect(() => {
+    try {
+      const params = new URLSearchParams(location.search);
+      const course = params.get('course');
+      const form = params.get('form');
+      if (course) setFilterCourse(course);
+      if (form) setFilterForm(form);
+    } catch (e) {
+      // ignore
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const [searchTerm, setSearchTerm] = useState('');
   const [includeStudentId, setIncludeStudentId] = useState(false);
   const [sortKey, setSortKey] = useState('submittedAt');
