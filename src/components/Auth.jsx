@@ -130,7 +130,7 @@ const Auth = () => {
             </div>
 
               <div className="form-group password-field">
-                <label htmlFor="login-password">Password (optional)</label>
+                <label htmlFor="login-password">Password</label>
                 <div className="password-input-wrap">
                   <input id="login-password" name="password" type={showPasswordLogin ? 'text' : 'password'} value={loginData.password || ''} onChange={(e) => setLoginData(prev => ({...prev, password: e.target.value}))} placeholder="Enter password (optional)" />
                   <button type="button" className="password-toggle" aria-label={showPasswordLogin ? 'Hide password' : 'Show password'} onClick={() => setShowPasswordLogin(s => !s)} aria-pressed={showPasswordLogin}>
