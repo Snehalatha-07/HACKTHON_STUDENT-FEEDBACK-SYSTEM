@@ -1,6 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { useFeedback } from '../../context/FeedbackContext';
 import { csvEscape } from '../../utils/data';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const AdminResponses = () => {
   const { feedbackResponses, feedbackForms, courses } = useFeedback();
@@ -8,33 +9,62 @@ const AdminResponses = () => {
   // Filters and UI state
   const [filterCourse, setFilterCourse] = useState('');
   const [filterForm, setFilterForm] = useState('');
-  const location = window.location;
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const tableRef = useRef(null);
+  const [liveMessage, setLiveMessage] = useState('');
+
   const updateUrlParams = (course, form) => {
     try {
       const params = new URLSearchParams(window.location.search);
       if (course) params.set('course', course); else params.delete('course');
       if (form) params.set('form', form); else params.delete('form');
       const qs = params.toString();
-      const newUrl = window.location.pathname + (qs ? `?${qs}` : '');
-      window.history.replaceState({}, '', newUrl);
+      const newPath = window.location.pathname + (qs ? `?${qs}` : '');
+      navigate(newPath, { replace: true });
     } catch (e) {
       // ignore
     }
   };
 
-  // Apply URL query filter if present on initial load (e.g. /admin/responses?course=123)
+  // Apply URL query filter when the search string changes
   React.useEffect(() => {
     try {
       const params = new URLSearchParams(location.search);
       const course = params.get('course');
       const form = params.get('form');
-      if (course) setFilterCourse(course);
-      if (form) setFilterForm(form);
+      setFilterCourse(course || '');
+      setFilterForm(form || '');
     } catch (e) {
       // ignore
     }
+  }, [location.search]);
+
+  // Focus the responses area and announce filter changes for screen readers
+  useEffect(() => {
+    try {
+      let msg = '';
+      if (filterCourse) {
+        const c = courses.find(x => x.id === filterCourse);
+        msg = `Filtered by course ${c ? c.name : filterCourse}`;
+      } else if (filterForm) {
+        const f = feedbackForms.find(x => x.id === filterForm);
+        msg = `Filtered by form ${f ? f.title : filterForm}`;
+      } else {
+        msg = 'Filters cleared';
+      }
+      setLiveMessage(msg);
+      // focus the results container so keyboard users land there
+      if (tableRef.current && typeof tableRef.current.focus === 'function') {
+        tableRef.current.focus();
+      }
+    } catch (e) {
+      // ignore
+    }
+    // we intentionally depend on filterCourse and filterForm
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [filterCourse, filterForm]);
   const [searchTerm, setSearchTerm] = useState('');
   const [includeStudentId, setIncludeStudentId] = useState(false);
   const [sortKey, setSortKey] = useState('submittedAt');
@@ -204,7 +234,7 @@ const AdminResponses = () => {
         </div>
       </div>
 
-      <div className="responses-table">
+      <div className="responses-table" ref={tableRef} tabIndex={-1}>
         {paged.length === 0 ? (
           <div className="empty-state"><p>No responses match the selected filters.</p></div>
         ) : (
@@ -236,6 +266,9 @@ const AdminResponses = () => {
           </table>
         )}
       </div>
+
+      {/* live region for screen readers */}
+      <div aria-live="polite" style={{position: 'absolute', left: -9999, width: 1, height: 1, overflow: 'hidden'}}>{liveMessage}</div>
 
       <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginTop: 12, alignItems: 'center' }}>
         <button className="btn btn-small" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}>Prev</button>

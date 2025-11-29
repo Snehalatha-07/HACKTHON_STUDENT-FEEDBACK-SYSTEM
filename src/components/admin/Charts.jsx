@@ -58,7 +58,26 @@ const BarChart = ({ data = [], labelKey = 'name', valueKey = 'count', heightPer 
           const label = d[labelKey] || '';
 
           return (
-            <g key={i} transform={`translate(0, ${y})`} style={{ cursor: onBarClick ? 'pointer' : 'default' }} onClick={() => onBarClick && onBarClick(d)} onKeyDown={() => onBarClick && onBarClick(d)} tabIndex={onBarClick ? 0 : -1} aria-label={`${label}: ${value}`} onMouseEnter={(e) => showTooltip(e, d)} onMouseMove={moveTooltip} onMouseLeave={hideTooltip}>
+            <g
+              key={i}
+              transform={`translate(0, ${y})`}
+              style={{ cursor: onBarClick ? 'pointer' : 'default' }}
+              onClick={() => onBarClick && onBarClick(d)}
+              onKeyDown={(e) => {
+                if (!onBarClick) return;
+                // Activate on Enter or Space
+                if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+                  e.preventDefault();
+                  onBarClick(d);
+                }
+              }}
+              tabIndex={onBarClick ? 0 : -1}
+              role={onBarClick ? 'button' : undefined}
+              aria-label={`${label}: ${value}`}
+              onMouseEnter={(e) => showTooltip(e, d)}
+              onMouseMove={moveTooltip}
+              onMouseLeave={hideTooltip}
+            >
               <text x={10} y={heightPer / 2} alignmentBaseline="middle" className="bar-label">{label}</text>
               <rect x={labelWidth} y={6} rx={6} ry={6} width={chartWidth} height={heightPer - 12} fill="#f1f5f9" />
               <rect x={labelWidth} y={6} rx={6} ry={6} width={barW} height={heightPer - 12} className="bar-fill-svg" fill="url(#barGradient)" />
