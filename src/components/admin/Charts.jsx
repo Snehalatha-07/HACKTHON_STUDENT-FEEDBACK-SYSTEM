@@ -60,6 +60,8 @@ const BarChart = ({ data = [], labelKey = 'name', valueKey = 'count', heightPer 
         <defs>
           <linearGradient id="barGradient" x1="0" x2="1">
             <stop offset="0%" stopColor="var(--primary)" />
+    const rafRef = useRef(null);
+    const pendingPos = useRef({ x: 0, y: 0 });
             <stop offset="100%" stopColor="var(--primary-2)" />
           </linearGradient>
         </defs>

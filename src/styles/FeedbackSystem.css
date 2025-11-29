@@ -371,6 +371,22 @@ input, select, textarea {
 .chart-tooltip-label { font-weight: 700; margin-bottom: 4px; }
 .chart-tooltip-value { font-size: 0.85rem; opacity: 0.95; }
 
+/* Chart legend */
+.chart-legend {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  background: rgba(255,255,255,0.96);
+  border-radius: 8px;
+  padding: 8px 10px;
+  box-shadow: 0 6px 20px rgba(2,6,23,0.06);
+  font-size: 0.85rem;
+  color: var(--text);
+}
+.chart-legend-item { display:flex; gap:8px; align-items:center; margin-bottom:6px; }
+.chart-legend-swatch { width:14px; height:14px; border-radius:4px; flex: none; box-shadow: 0 1px 2px rgba(0,0,0,0.06); }
+.chart-legend-item:last-child { margin-bottom:0; }
+
 /* Subtle hover + press micro-interaction for form controls */
 .form-group input:active, .form-group select:active, .login-btn:active, .tab-btn:active {
   transform: translateY(1px) scale(0.998);
