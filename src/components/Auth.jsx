@@ -14,6 +14,13 @@ const Auth = () => {
   const [loginData, setLoginData] = useState({ username: '', role: 'student', remember: false });
   const [registerData, setRegisterData] = useState({ username: '', role: 'student', password: '', remember: false });
   const [errors, setErrors] = useState({});
+  const [showPasswordLogin, setShowPasswordLogin] = useState(false);
+  const [showPasswordRegister, setShowPasswordRegister] = useState(false);
+
+  // ensure loginData has optional password field
+  if (loginData.password === undefined) {
+    setLoginData(prev => ({ ...prev, password: '' }));
+  }
 
   if (user) {
     return <Navigate to={user.role === 'admin' ? '/admin' : '/student'} replace />;
@@ -122,6 +129,14 @@ const Auth = () => {
               </select>
             </div>
 
+              <div className="form-group password-field">
+                <label htmlFor="login-password">Password (optional)</label>
+                <div className="password-input-wrap">
+                  <input id="login-password" name="password" type={showPasswordLogin ? 'text' : 'password'} value={loginData.password || ''} onChange={(e) => setLoginData(prev => ({...prev, password: e.target.value}))} placeholder="Enter password (optional)" />
+                  <button type="button" className="password-toggle" aria-label={showPasswordLogin ? 'Hide password' : 'Show password'} onClick={() => setShowPasswordLogin(s => !s)}>{showPasswordLogin ? 'Hide' : 'Show'}</button>
+                </div>
+              </div>
+
             <div className="form-group form-remember">
               <label>
                 <input aria-label="Remember me" type="checkbox" checked={loginData.remember} onChange={(e) => setLoginData(prev => ({...prev, remember: e.target.checked}))} /> Remember Me
@@ -147,9 +162,12 @@ const Auth = () => {
               </select>
             </div>
 
-            <div className="form-group">
+            <div className="form-group password-field">
               <label htmlFor="reg-password">Password</label>
-              <input id="reg-password" type="password" value={registerData.password} onChange={(e) => setRegisterData(prev => ({...prev, password: e.target.value}))} aria-required="true" aria-describedby={errors.password ? 'reg-password-error' : undefined} />
+              <div className="password-input-wrap">
+                <input id="reg-password" type={showPasswordRegister ? 'text' : 'password'} value={registerData.password} onChange={(e) => setRegisterData(prev => ({...prev, password: e.target.value}))} aria-required="true" aria-describedby={errors.password ? 'reg-password-error' : undefined} />
+                <button type="button" className="password-toggle" aria-label={showPasswordRegister ? 'Hide password' : 'Show password'} onClick={() => setShowPasswordRegister(s => !s)}>{showPasswordRegister ? 'Hide' : 'Show'}</button>
+              </div>
               {errors.password && <div id="reg-password-error" className="field-error">{errors.password}</div>}
             </div>
 

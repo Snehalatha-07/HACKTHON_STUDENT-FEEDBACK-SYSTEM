@@ -10,6 +10,7 @@ const RegForm = () => {
   const [form, setForm] = useState({ nameOrId: '', email: '', password: '', role: 'student', remember: false });
   const [errors, setErrors] = useState({});
   const [toast, setToast] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const validate = () => {
     const e = {};
@@ -47,9 +48,12 @@ const RegForm = () => {
           <input id="email" value={form.email} onChange={(e) => setForm(prev => ({ ...prev, email: e.target.value }))} placeholder="Email address" />
         </div>
 
-        <div className="form-group">
+        <div className="form-group password-field">
           <label htmlFor="password">Password</label>
-          <input id="password" type="password" value={form.password} onChange={(e) => setForm(prev => ({ ...prev, password: e.target.value }))} aria-required="true" aria-describedby={errors.password ? 'reg-password-error' : undefined} />
+          <div className="password-input-wrap">
+            <input id="password" type={showPassword ? 'text' : 'password'} value={form.password} onChange={(e) => setForm(prev => ({ ...prev, password: e.target.value }))} aria-required="true" aria-describedby={errors.password ? 'reg-password-error' : undefined} />
+            <button type="button" className="password-toggle" aria-label={showPassword ? 'Hide password' : 'Show password'} onClick={() => setShowPassword(s => !s)}>{showPassword ? 'Hide' : 'Show'}</button>
+          </div>
           {errors.password && <div id="reg-password-error" className="field-error">{errors.password}</div>}
         </div>
 
