@@ -632,6 +632,17 @@ input, select, textarea {
   .animate-fade-up, .playful-right .hero-illustration svg { animation: none !important; transform: none !important; }
 }
 
+/* Animate quick action cards when present (logged-in dashboard) */
+.quick-actions .action-card {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeUp 560ms cubic-bezier(.2,.9,.2,1) both;
+}
+.quick-actions .action-card:nth-child(1) { animation-delay: 80ms; }
+.quick-actions .action-card:nth-child(2) { animation-delay: 160ms; }
+.quick-actions .action-card:nth-child(3) { animation-delay: 240ms; }
+.quick-actions .action-card:nth-child(4) { animation-delay: 320ms; }
+
 .dashboard-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
