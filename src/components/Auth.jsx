@@ -133,7 +133,19 @@ const Auth = () => {
                 <label htmlFor="login-password">Password (optional)</label>
                 <div className="password-input-wrap">
                   <input id="login-password" name="password" type={showPasswordLogin ? 'text' : 'password'} value={loginData.password || ''} onChange={(e) => setLoginData(prev => ({...prev, password: e.target.value}))} placeholder="Enter password (optional)" />
-                  <button type="button" className="password-toggle" aria-label={showPasswordLogin ? 'Hide password' : 'Show password'} onClick={() => setShowPasswordLogin(s => !s)}>{showPasswordLogin ? 'Hide' : 'Show'}</button>
+                  <button type="button" className="password-toggle" aria-label={showPasswordLogin ? 'Hide password' : 'Show password'} onClick={() => setShowPasswordLogin(s => !s)} aria-pressed={showPasswordLogin}>
+                    {showPasswordLogin ? (
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M3 3l18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M10.58 10.58A3 3 0 0 0 13.42 13.42" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    ) : (
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M1.5 12s3.5-6 10.5-6 10.5 6 10.5 6-3.5 6-10.5 6S1.5 12 1.5 12z" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                        <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.6" />
+                      </svg>
+                    )}
+                  </button>
                 </div>
               </div>
 
@@ -166,7 +178,19 @@ const Auth = () => {
               <label htmlFor="reg-password">Password</label>
               <div className="password-input-wrap">
                 <input id="reg-password" type={showPasswordRegister ? 'text' : 'password'} value={registerData.password} onChange={(e) => setRegisterData(prev => ({...prev, password: e.target.value}))} aria-required="true" aria-describedby={errors.password ? 'reg-password-error' : undefined} />
-                <button type="button" className="password-toggle" aria-label={showPasswordRegister ? 'Hide password' : 'Show password'} onClick={() => setShowPasswordRegister(s => !s)}>{showPasswordRegister ? 'Hide' : 'Show'}</button>
+                <button type="button" className="password-toggle" aria-label={showPasswordRegister ? 'Hide password' : 'Show password'} onClick={() => setShowPasswordRegister(s => !s)} aria-pressed={showPasswordRegister}>
+                  {showPasswordRegister ? (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path d="M3 3l18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M10.58 10.58A3 3 0 0 0 13.42 13.42" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  ) : (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path d="M1.5 12s3.5-6 10.5-6 10.5 6 10.5 6-3.5 6-10.5 6S1.5 12 1.5 12z" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.6" />
+                    </svg>
+                  )}
+                </button>
               </div>
               {errors.password && <div id="reg-password-error" className="field-error">{errors.password}</div>}
             </div>

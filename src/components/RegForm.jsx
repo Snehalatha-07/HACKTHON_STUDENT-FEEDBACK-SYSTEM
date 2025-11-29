@@ -12,6 +12,17 @@ const RegForm = () => {
   const [toast, setToast] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
 
+  const passwordStrength = (pw) => {
+    if (!pw) return { score: 0, label: 'Too short' };
+    let score = 0;
+    if (pw.length >= 8) score++;
+    if (/[0-9]/.test(pw)) score++;
+    if (/[A-Z]/.test(pw)) score++;
+    if (/[^A-Za-z0-9]/.test(pw)) score++;
+    const labels = ['Very weak', 'Weak', 'OK', 'Strong', 'Very strong'];
+    return { score, label: labels[score] || labels[0] };
+  };
+
   const validate = () => {
     const e = {};
     if (!form.nameOrId.trim()) e.nameOrId = 'Enter name or ID';
@@ -52,9 +63,27 @@ const RegForm = () => {
           <label htmlFor="password">Password</label>
           <div className="password-input-wrap">
             <input id="password" type={showPassword ? 'text' : 'password'} value={form.password} onChange={(e) => setForm(prev => ({ ...prev, password: e.target.value }))} aria-required="true" aria-describedby={errors.password ? 'reg-password-error' : undefined} />
-            <button type="button" className="password-toggle" aria-label={showPassword ? 'Hide password' : 'Show password'} onClick={() => setShowPassword(s => !s)}>{showPassword ? 'Hide' : 'Show'}</button>
+            <button type="button" className="password-toggle" aria-label={showPassword ? 'Hide password' : 'Show password'} onClick={() => setShowPassword(s => !s)} aria-pressed={showPassword}>
+              {showPassword ? (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M3 3l18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M10.58 10.58A3 3 0 0 0 13.42 13.42" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              ) : (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M1.5 12s3.5-6 10.5-6 10.5 6 10.5 6-3.5 6-10.5 6S1.5 12 1.5 12z" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.6" />
+                </svg>
+              )}
+            </button>
           </div>
           {errors.password && <div id="reg-password-error" className="field-error">{errors.password}</div>}
+
+          {/* Password strength meter */}
+          <div className="strength-meter" aria-hidden>
+            <div className={`strength-bar s-${passwordStrength(form.password).score}`} style={{width: `${(passwordStrength(form.password).score/4)*100}%`}} />
+            <div className="strength-label">{form.password ? passwordStrength(form.password).label : ''}</div>
+          </div>
         </div>
 
         <div className="form-group">
