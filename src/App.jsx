@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { FeedbackProvider, useFeedback } from './context/FeedbackContext';
 import Navigation from './components/Navigation';
+import ErrorBoundary from './components/ErrorBoundary';
+import ErrorOverlay from './components/ErrorOverlay';
 import Home from './components/Home';
 import Login from './components/Login';
 import Reg from './components/Reg';
@@ -11,8 +13,10 @@ import Auth from './components/Auth';
 import AdminDashboard from './components/admin/AdminDashboard';
 import AdminForms from './components/admin/AdminForms';
 import AdminAnalytics from './components/admin/AdminAnalytics';
+import AnalyticsAdvancedDemo from './components/admin/AnalyticsAdvancedDemo';
 import AdminCourses from './components/admin/AdminCourses';
 import AdminResponses from './components/admin/AdminResponses';
+import AdminDebug from './components/admin/AdminDebug';
 
 // Student Components
 import StudentDashboard from './components/student/StudentDashboard';
@@ -40,6 +44,7 @@ const ProtectedRoute = ({ children, requiredRole }) => {
 function AppContent() {
   return (
     <div className="app">
+      <ErrorOverlay />
       <Navigation />
       <main className="main-content">
         <Routes>
@@ -74,6 +79,14 @@ function AppContent() {
             } 
           />
           <Route 
+            path="/admin/analytics/advanced" 
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <AnalyticsAdvancedDemo />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
             path="/admin/courses" 
             element={
               <ProtectedRoute requiredRole="admin">
@@ -86,6 +99,14 @@ function AppContent() {
             element={
               <ProtectedRoute requiredRole="admin">
                 <AdminResponses />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/debug" 
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <AdminDebug />
               </ProtectedRoute>
             } 
           />
@@ -128,7 +149,9 @@ function App() {
   return (
     <Router>
       <FeedbackProvider>
-        <AppContent />
+        <ErrorBoundary>
+          <AppContent />
+        </ErrorBoundary>
       </FeedbackProvider>
     </Router>
   );

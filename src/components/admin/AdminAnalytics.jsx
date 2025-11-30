@@ -4,8 +4,6 @@ import { dataUtils } from '../../utils/data';
 import BarChart from './Charts';
 import Sparkline from './Sparkline';
 import { useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
-
 // Simple palette selector component
 const PaletteSelector = ({ onChange }) => {
   const palettes = [
@@ -32,6 +30,7 @@ const AdminAnalytics = () => {
   const { feedbackForms, feedbackResponses, courses, instructors, submitFeedbackResponse } = useFeedback();
   const navigate = useNavigate();
   const [selectedForm, setSelectedForm] = useState(null);
+  const [selectedPalette, setSelectedPalette] = useState(['#06b6d4', '#0ea5a4', '#34d399', '#60a5fa', '#f59e0b']);
 
   // Auto-seed demo responses once in dev when there are no responses yet
   React.useEffect(() => {

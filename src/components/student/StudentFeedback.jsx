@@ -52,7 +52,7 @@ const QuickFeedbackForm = ({ courses = [], onSubmit }) => {
 };
 
 const StudentFeedback = () => {
-  const { feedbackForms, courses, instructors, submitFeedbackResponse } = useFeedback();
+  const { feedbackForms, courses, instructors, feedbackResponses, submitFeedbackResponse, user } = useFeedback();
   const [selectedForm, setSelectedForm] = useState(null);
   const [formResponses, setFormResponses] = useState({});
   const [submitting, setSubmitting] = useState(false);
@@ -103,6 +103,9 @@ const StudentFeedback = () => {
 
   const renderQuestion = (question, index) => {
     const value = formResponses[question.id] || '';
+    // Defensive defaults to avoid runtime errors when question shape is incomplete
+    const scale = question.scale || { min: 1, max: 5, labels: ['1','2','3','4','5'] };
+    const labels = Array.isArray(scale.labels) && scale.labels.length ? scale.labels : Array.from({ length: Math.max(1, (scale.max || 5) - (scale.min || 1) + 1) }, (_, i) => String(i + (scale.min || 1)));
 
     return (
       <div key={question.id} className="question-container">
@@ -117,8 +120,8 @@ const StudentFeedback = () => {
           {question.type === questionTypes.RATING && (
             <div className="rating-input">
               <div className="rating-scale">
-                {question.scale.labels.map((label, idx) => {
-                  const ratingValue = idx + question.scale.min;
+                {labels.map((label, idx) => {
+                  const ratingValue = idx + (scale.min || 1);
                   return (
                     <label key={ratingValue} className="rating-option">
                       <input
@@ -273,6 +276,8 @@ const StudentFeedback = () => {
       </div>
 
       {/* Quick feedback card */}
+      {toast && <Toast message={toast} onClose={() => setToast(null)} />}
+
       <div className="quick-feedback-card">
         <h3>Quick Feedback</h3>
         <p>Submit a short rating and comment for a course.</p>
@@ -287,8 +292,8 @@ const StudentFeedback = () => {
             studentId: data.anonymous ? 'anonymous' : (user && user.id) || 'guest'
           };
           submitFeedbackResponse(response);
-          // simple UI feedback
-          alert('Thank you — your quick feedback was submitted');
+          // user-visible toast
+          setToast('Thank you — your quick feedback was submitted');
         }} />
       </div>
 
